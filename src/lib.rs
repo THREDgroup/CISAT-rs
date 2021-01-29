@@ -1,10 +1,11 @@
 mod utilities;
-pub use utilities::{OperationalLearning, Parameters, TemperatureSchedule};
+pub use utilities::{
+    parameters::{OperationalLearning, Parameters, TemperatureSchedule},
+    Solution,
+};
 
-mod team;
-pub use team::{build_team, Team};
+mod abm;
+pub use abm::team::{build_team, Team};
 
-mod agent;
-
-mod problems;
-pub use problems::structure::Structure;
+pub mod problems;
+pub use problems::{example::Example, structure::Structure};
