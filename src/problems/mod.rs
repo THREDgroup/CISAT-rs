@@ -1,1 +1,2 @@
-pub mod truss;
+pub mod example;
+pub mod structure;

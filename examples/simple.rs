@@ -1,7 +1,7 @@
 use cisat;
 
 fn main() {
-    let x: cisat::Team<cisat::Truss> = cisat::build_team(cisat::Parameters {
+    let x: cisat::Team<cisat::Structure> = cisat::build_team(cisat::Parameters {
         number_of_repetitions: 0,
         number_of_agents: 0,
         number_of_iterations: 0,
@@ -13,4 +13,6 @@ fn main() {
         quality_bias: 0.0,
         satisficing_fraction: 0.0,
     });
+
+    println!("{:?}", x);
 }

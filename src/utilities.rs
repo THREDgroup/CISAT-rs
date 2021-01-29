@@ -1,5 +1,5 @@
 #[non_exhaustive]
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum TemperatureSchedule {
     Triki {
         initial_temperature: f64,
@@ -14,7 +14,7 @@ pub enum TemperatureSchedule {
 }
 
 #[non_exhaustive]
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum OperationalLearning {
     Multinomial {
         learning_rate: f64,
@@ -27,7 +27,7 @@ pub enum OperationalLearning {
     HiddenMarkov,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Parameters {
     pub number_of_repetitions: u64,
     pub number_of_agents: u64,
@@ -44,5 +44,9 @@ impl Parameters {
 }
 
 pub trait Solution<T> {
-    fn generate_solution() -> T;
+    const NUMBER_OF_MOVE_OPERATORS: usize;
+    const NUMBER_OF_OBJECTIVES: usize;
+    fn generate_initial_solution() -> T;
+    fn apply_move_operator(&mut self, move_index: usize);
+    fn get_quality(&mut self) -> Vec<f64>;
 }

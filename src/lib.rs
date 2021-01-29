@@ -7,4 +7,4 @@ pub use team::{build_team, Team};
 mod agent;
 
 mod problems;
-pub use problems::truss::Truss;
+pub use problems::structure::Structure;

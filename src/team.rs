@@ -1,6 +1,7 @@
 use super::agent::{build_agent, Agent};
 use super::utilities;
 
+#[derive(Clone, Debug)]
 pub struct Team<T> {
     pub parameters: utilities::Parameters,
     agent_list: Vec<Agent<T>>,

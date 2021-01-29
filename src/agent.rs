@@ -1,6 +1,6 @@
 use super::utilities;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Agent<T> {
     /// Agent_id
     agent_id: u64,
@@ -20,7 +20,7 @@ impl<T: utilities::Solution<T>> Agent<T> {
     fn reset(&mut self) {}
 
     fn generate_candidate_solution(&mut self) -> T {
-        T::generate_solution()
+        T::generate_initial_solution()
     }
 
     fn iterate(&mut self) {}
@@ -58,7 +58,7 @@ pub fn build_agent<T: utilities::Solution<T>>(
         temperature: 0.0,
         current_solution_quality: 0.0,
         best_quality_so_far: 0.0,
-        current_solution: T::generate_solution(),
+        current_solution: T::generate_initial_solution(),
         parameters,
     }
 }
