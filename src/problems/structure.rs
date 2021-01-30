@@ -15,8 +15,4 @@ impl Solution<Structure> for Structure {
     }
 
     fn apply_move_operator(&mut self, move_index: usize, temperature: f64) {}
-
-    fn get_quality_scalar(&mut self) -> f64 {
-        unimplemented!()
-    }
 }

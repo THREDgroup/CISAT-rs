@@ -10,3 +10,5 @@ description = "Cognitively-Inspired Simulated Annealing Teams"
 [dependencies]
 rand = "0.8.3"
 rand_distr = "0.4.0"
+strum = "0.20"
+strum_macros = "0.20"

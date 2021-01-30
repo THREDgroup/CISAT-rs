@@ -1,11 +1,15 @@
-use super::super::utilities::randomness::{random_gaussian_vector, random_uniform_vector};
-use super::super::utilities::Solution;
+use super::super::{
+    utilities::randomness::{random_gaussian_vector, random_uniform_vector},
+    utilities::Solution,
+};
+use std::{cmp::Ordering, ops::Sub};
 
 const NUMBER_OF_DIMENSIONS: usize = 5;
 
 #[derive(Clone, Debug)]
 pub struct Ackley {
     objective_function_value: Vec<f64>,
+    quality_scalar: f64,
     x: Vec<f64>,
 }
 
@@ -17,6 +21,7 @@ impl Solution<Ackley> for Ackley {
         let mut solution = Ackley {
             objective_function_value: vec![0.0; Ackley::NUMBER_OF_OBJECTIVES],
             x: random_uniform_vector(NUMBER_OF_DIMENSIONS, -5.0, 5.0),
+            quality_scalar: 0.0,
         };
         solution.evaluate();
         solution
@@ -28,10 +33,6 @@ impl Solution<Ackley> for Ackley {
             self.x[i] += perturbation[i];
         }
         self.evaluate();
-    }
-
-    fn get_quality_scalar(&mut self) -> f64 {
-        -self.objective_function_value.iter().sum::<f64>()
     }
 }
 
@@ -49,5 +50,34 @@ impl Ackley {
         fx -= (cosine_sum / (n as f64)).exp();
         fx += std::f64::consts::E + 20.0;
         self.objective_function_value = vec![fx; 1];
+        self.quality_scalar = -fx;
+    }
+}
+
+impl PartialEq for Ackley {
+    fn eq(&self, other: &Self) -> bool {
+        self.quality_scalar == other.quality_scalar
+    }
+}
+
+impl Eq for Ackley {}
+
+impl PartialOrd for Ackley {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.quality_scalar.partial_cmp(&other.quality_scalar)
+    }
+}
+
+impl Ord for Ackley {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.partial_cmp(other).unwrap()
+    }
+}
+
+impl Sub for Ackley {
+    type Output = f64;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        self.quality_scalar - rhs.quality_scalar
     }
 }

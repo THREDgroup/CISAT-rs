@@ -13,7 +13,7 @@ pub struct Agent<T> {
     /// The lst operation performed by the agent
     last_operation: u64,
     /// The temperature used by the agent
-    temperature: f64,
+    pub temperature: f64,
     current_solution_quality: f64,
     best_quality_so_far: f64,
     current_solution: T,
@@ -34,13 +34,11 @@ impl<T: Clone + Solution<T>> Agent<T> {
         // Save summed qualities to local variables
 
         // Compare candidate
-        let current_quality = self.current_solution.get_quality_scalar();
-        let candidate_quality = candidate.get_quality_scalar();
-        if candidate_quality > current_quality {
+        if candidate > self.current_solution {
             self.current_solution = candidate;
         } else {
             let acceptance_probability =
-                ((candidate_quality - current_quality) / self.temperature).exp();
+                ((self.current_solution.clone() - candidate.clone()) / self.temperature).exp();
             if random_unit_draw() < acceptance_probability {
                 self.current_solution = candidate;
             }

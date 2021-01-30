@@ -1,3 +1,7 @@
+#![warn(clippy::all)]
+#![warn(missing_docs)]
+#![warn(missing_doc_code_examples)]
+
 mod utilities;
 pub use utilities::{
     parameters::{OperationalLearning, Parameters, TemperatureSchedule},

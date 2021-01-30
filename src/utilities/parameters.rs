@@ -24,7 +24,9 @@ pub enum OperationalLearning {
         learning_rate: f64,
         initial_learning_matrix: Vec<Vec<f64>>,
     },
-    HiddenMarkov,
+    HiddenMarkov {
+        learning_rate: f64,
+    },
 }
 
 #[derive(Clone, Debug)]
