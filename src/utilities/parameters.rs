@@ -31,7 +31,7 @@ pub enum OperationalLearning {
 
 #[derive(Clone, Debug)]
 pub struct Parameters {
-    pub number_of_repetitions: usize,
+    pub number_of_teams: usize,
     pub number_of_agents: usize,
     pub number_of_iterations: usize,
     pub temperature_schedule: TemperatureSchedule,

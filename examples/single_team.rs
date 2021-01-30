@@ -2,7 +2,7 @@ use cisat;
 
 fn main() {
     let mut x: cisat::Team<cisat::problems::Ackley> = cisat::build_team(cisat::Parameters {
-        number_of_repetitions: 0,
+        number_of_teams: 0,
         number_of_agents: 5,
         number_of_iterations: 10,
         temperature_schedule: cisat::TemperatureSchedule::Cauchy {

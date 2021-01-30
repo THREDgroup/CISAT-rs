@@ -11,14 +11,14 @@ pub struct Cohort<T> {
 
 impl<T: Clone + Solution<T>> Cohort<T> {
     pub fn solve(&mut self) {
-        for i in 0..self.parameters.number_of_repetitions {
+        for i in 0..self.parameters.number_of_teams {
             self.team_list[i].solve();
         }
     }
 }
 
 pub fn build_cohort<T: Clone + Solution<T>>(parameters: Parameters) -> Cohort<T> {
-    let teams = vec![build_team(parameters.clone()); parameters.number_of_repetitions];
+    let teams = vec![build_team(parameters.clone()); parameters.number_of_teams];
     Cohort {
         parameters,
         team_list: teams,
