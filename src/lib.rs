@@ -9,6 +9,7 @@ pub use utilities::{
 };
 
 mod abm;
+pub use abm::cohort::{build_cohort, Cohort};
 pub use abm::team::{build_team, Team};
 
 pub mod problems;

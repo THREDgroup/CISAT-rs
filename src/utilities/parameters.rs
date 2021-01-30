@@ -31,9 +31,9 @@ pub enum OperationalLearning {
 
 #[derive(Clone, Debug)]
 pub struct Parameters {
-    pub number_of_repetitions: u64,
+    pub number_of_repetitions: usize,
     pub number_of_agents: usize,
-    pub number_of_iterations: u64,
+    pub number_of_iterations: usize,
     pub temperature_schedule: TemperatureSchedule,
     pub operational_learning: OperationalLearning,
     pub self_bias: f64,

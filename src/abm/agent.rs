@@ -29,7 +29,7 @@ impl<T: Clone + Solution<T>> Agent<T> {
 
     pub fn iterate(&mut self) {
         // Generate a candidate
-        let mut candidate = self.generate_candidate_solution();
+        let candidate = self.generate_candidate_solution();
 
         // Save summed qualities to local variables
 
