@@ -2,6 +2,7 @@ use super::super::utilities::{
     parameters::{OperationalLearning, Parameters, TemperatureSchedule},
     Solution,
 };
+use crate::utilities::randomness::random_unit_draw;
 
 #[derive(Clone, Debug)]
 pub struct Agent<T> {
@@ -19,14 +20,32 @@ pub struct Agent<T> {
     parameters: Parameters,
 }
 
-impl<T: Solution<T>> Agent<T> {
-    fn reset(&mut self) {}
-
+impl<T: Clone + Solution<T>> Agent<T> {
     fn generate_candidate_solution(&mut self) -> T {
-        T::generate_initial_solution()
+        let mut candidate = self.current_solution.clone();
+        candidate.apply_move_operator(0, self.temperature);
+        candidate
     }
 
-    fn iterate(&mut self) {}
+    pub fn iterate(&mut self) {
+        // Generate a candidate
+        let mut candidate = self.generate_candidate_solution();
+
+        // Save summed qualities to local variables
+
+        // Compare candidate
+        let current_quality = self.current_solution.get_quality_scalar();
+        let candidate_quality = candidate.get_quality_scalar();
+        if candidate_quality > current_quality {
+            self.current_solution = candidate;
+        } else {
+            let acceptance_probability =
+                ((candidate_quality - current_quality) / self.temperature).exp();
+            if random_unit_draw() < acceptance_probability {
+                self.current_solution = candidate;
+            }
+        }
+    }
 
     fn update_temperature(&mut self) {
         match self.parameters.temperature_schedule {

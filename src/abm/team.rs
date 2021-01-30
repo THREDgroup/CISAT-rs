@@ -7,10 +7,18 @@ pub struct Team<T> {
     agent_list: Vec<Agent<T>>,
 }
 
-impl<T> Team<T> {
-    fn solve(&mut self) {}
+impl<T: Clone + Solution<T>> Team<T> {
+    pub fn solve(&mut self) {
+        for _ in 0..self.parameters.number_of_iterations {
+            self.iterate();
+        }
+    }
 
-    fn iterate(&mut self) {}
+    fn iterate(&mut self) {
+        for i in 0..self.parameters.number_of_agents {
+            self.agent_list[i].iterate();
+        }
+    }
 
     fn pull_best_solution(&mut self) {}
 }

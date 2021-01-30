@@ -8,4 +8,4 @@ mod abm;
 pub use abm::team::{build_team, Team};
 
 pub mod problems;
-pub use problems::{example::Example, structure::Structure};
+pub use problems::ackley::Ackley; //, example::Example, structure::Structure};

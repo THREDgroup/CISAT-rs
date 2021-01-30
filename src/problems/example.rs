@@ -1,8 +1,8 @@
 use super::super::utilities::Solution;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Example {
-    quality: Vec<f64>,
+    objective_function_value: Vec<f64>,
 }
 
 impl Solution<Example> for Example {
@@ -11,13 +11,13 @@ impl Solution<Example> for Example {
 
     fn generate_initial_solution() -> Example {
         Example {
-            quality: vec![0.0; Example::NUMBER_OF_OBJECTIVES],
+            objective_function_value: vec![0.0; Example::NUMBER_OF_OBJECTIVES],
         }
     }
 
-    fn apply_move_operator(&mut self, move_index: usize) {}
+    fn apply_move_operator(&mut self, move_index: usize, temperature: f64) {}
 
-    fn get_quality(&mut self) -> Vec<f64> {
-        self.quality.to_vec()
+    fn get_quality_scalar(&mut self) -> f64 {
+        unimplemented!()
     }
 }
