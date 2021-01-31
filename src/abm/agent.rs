@@ -13,11 +13,11 @@ pub struct Agent<T> {
     /// The lst operation performed by the agent
     last_operation: u64,
     /// The temperature used by the agent
-    pub temperature: f64,
+    pub(crate) temperature: f64,
     current_solution_quality: f64,
     current_solution: T,
-    pub best_quality_so_far: f64,
-    best_solution_so_far: T,
+    pub(crate) best_quality_so_far: f64,
+    pub(crate) best_solution_so_far: T,
     parameters: Parameters,
 }
 
@@ -28,7 +28,7 @@ impl<T: Clone + Solution<T>> Agent<T> {
         candidate
     }
 
-    pub fn iterate(&mut self) {
+    pub(crate) fn iterate(&mut self) {
         // Update temperature
         self.update_temperature();
 

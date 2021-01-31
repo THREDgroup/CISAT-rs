@@ -25,13 +25,13 @@ impl<T: Clone + Solution<T>> Team<T> {
     }
 
     fn pull_best_solution(&mut self) -> T {
-        let best_agent = agent_list[i].clone();
+        let mut best_solution = self.agent_list[0].best_solution_so_far.clone();
         for i in 1..self.agent_list.len() {
-            if best_agent > self.agent_list[i] {
-                best_agent = self.agent_list[i].clone();
+            if best_solution > self.agent_list[i].best_solution_so_far {
+                best_solution = self.agent_list[i].best_solution_so_far.clone();
             }
         }
-        best_agent
+        best_solution
     }
 }
 
