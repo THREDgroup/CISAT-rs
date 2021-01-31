@@ -28,7 +28,10 @@ impl<T: Clone + Solution<T>> Team<T> {
 }
 
 pub fn build_team<T: Clone + Solution<T>>(parameters: Parameters) -> Team<T> {
-    let agents = vec![build_agent(0, parameters.clone()); parameters.number_of_agents];
+    let mut agents = vec![build_agent(0, parameters.clone()); parameters.number_of_agents];
+    for i in 1..parameters.number_of_agents {
+        agents[i] = build_agent(i, parameters.clone());
+    }
     Team {
         parameters,
         agent_list: agents,
@@ -95,6 +98,11 @@ impl<T: Clone + Solution<T>> fmt::Display for Team<T> {
         for i in 0..self.agent_list.len() {
             writeln!(f, "\tAgent {}:", i);
             writeln!(f, "\t\ttemperature = {}", self.agent_list[i].temperature);
+            writeln!(
+                f,
+                "\t\tquality = {}",
+                self.agent_list[i].best_quality_so_far
+            );
         }
 
         writeln!(f, "\n")

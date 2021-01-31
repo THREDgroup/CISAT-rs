@@ -11,7 +11,8 @@ pub fn random_gaussian_vector(length: usize, mean: f64, standard_deviation: f64)
 
     // Replace elemnts with uniform normals
     for i in 0..length {
-        random_vector[i] += normal.sample(&mut rng);
+        let dd = normal.sample(&mut rng);
+        random_vector[i] += dd;
     }
 
     return random_vector;

@@ -34,6 +34,10 @@ impl Solution<Ackley> for Ackley {
         }
         self.evaluate();
     }
+
+    fn get_quality_scalar(&self) -> f64 {
+        self.quality_scalar
+    }
 }
 
 impl Ackley {
