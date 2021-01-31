@@ -29,15 +29,23 @@ impl<T: Clone + Solution<T>> Agent<T> {
     }
 
     pub fn iterate(&mut self) {
+        // Update temperature
+        self.update_temperature();
+
         // Generate a candidate
         let candidate = self.generate_candidate_solution();
 
         // Compare candidate
         if candidate > self.current_solution {
+            println!(
+                "{} is better than {}",
+                candidate.get_quality_scalar(),
+                self.current_solution.get_quality_scalar()
+            );
             self.current_solution = candidate;
         } else {
-            let acceptance_probability =
-                ((self.current_solution.clone() - candidate.clone()) / self.temperature).exp();
+            let delta = candidate.clone() - self.current_solution.clone();
+            let acceptance_probability = (delta / self.temperature).exp();
             if random_unit_draw() < acceptance_probability {
                 self.current_solution = candidate;
             }
@@ -48,6 +56,9 @@ impl<T: Clone + Solution<T>> Agent<T> {
             self.best_solution_so_far = self.current_solution.clone();
             self.best_quality_so_far = self.best_solution_so_far.get_quality_scalar();
         }
+
+        // Increment iteration number
+        self.iteration_number += 1;
     }
 
     fn update_temperature(&mut self) {
@@ -76,7 +87,7 @@ pub fn build_agent<T: Solution<T> + Clone>(agent_id: usize, parameters: Paramete
     let soln = T::generate_initial_solution();
     Agent {
         agent_id,
-        iteration_number: 0,
+        iteration_number: 1,
         last_operation: 0,
         temperature: 0.0,
         current_solution_quality: soln.get_quality_scalar(),
