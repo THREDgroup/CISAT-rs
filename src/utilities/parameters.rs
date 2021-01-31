@@ -29,6 +29,15 @@ pub enum OperationalLearning {
     },
 }
 
+#[non_exhaustive]
+#[derive(Clone, Debug)]
+pub enum CommunicationStyle {
+    ConstantFrequency { frequency: f64 },
+    RegularInterval { interval: usize },
+    ScheduledMeetings { times: Vec<usize> },
+    None,
+}
+
 #[derive(Clone, Debug)]
 pub struct Parameters {
     pub number_of_teams: usize,

@@ -24,7 +24,15 @@ impl<T: Clone + Solution<T>> Team<T> {
         }
     }
 
-    fn pull_best_solution(&mut self) {}
+    fn pull_best_solution(&mut self) -> T {
+        let best_agent = agent_list[i].clone();
+        for i in 1..self.agent_list.len() {
+            if best_agent > self.agent_list[i] {
+                best_agent = self.agent_list[i].clone();
+            }
+        }
+        best_agent
+    }
 }
 
 pub fn build_team<T: Clone + Solution<T>>(parameters: Parameters) -> Team<T> {
