@@ -27,7 +27,7 @@ impl Solution<Ackley> for Ackley {
         solution
     }
 
-    fn apply_move_operator(&mut self, move_index: usize, temperature: f64) {
+    fn apply_move_operator(&mut self, _move_index: usize, temperature: f64) {
         let perturbation = random_gaussian_vector(self.x.len(), 0.0, temperature);
         for i in 0..self.x.len() {
             self.x[i] += perturbation[i];

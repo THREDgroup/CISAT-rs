@@ -1,6 +1,6 @@
 use super::{
     super::utilities::{parameters::Parameters, Solution},
-    agent::{build_agent, Agent},
+    agent::Agent,
 };
 use crate::{OperationalLearning, TemperatureSchedule};
 use std::fmt;
@@ -12,6 +12,17 @@ pub struct Team<T> {
 }
 
 impl<T: Clone + Solution<T>> Team<T> {
+    pub fn new(parameters: Parameters) -> Team<T> {
+        let mut agents = vec![Agent::new(parameters.clone()); parameters.number_of_agents];
+        for i in 1..parameters.number_of_agents {
+            agents[i] = Agent::new(parameters.clone());
+        }
+        Team {
+            parameters,
+            agent_list: agents,
+        }
+    }
+
     pub fn solve(&mut self) {
         for _ in 0..self.parameters.number_of_iterations {
             self.iterate();
@@ -35,17 +46,7 @@ impl<T: Clone + Solution<T>> Team<T> {
     }
 }
 
-pub fn build_team<T: Clone + Solution<T>>(parameters: Parameters) -> Team<T> {
-    let mut agents = vec![build_agent(0, parameters.clone()); parameters.number_of_agents];
-    for i in 1..parameters.number_of_agents {
-        agents[i] = build_agent(i, parameters.clone());
-    }
-    Team {
-        parameters,
-        agent_list: agents,
-    }
-}
-
+#[allow(unused_must_use)]
 impl<T: Clone + Solution<T>> fmt::Display for Team<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         writeln!(f, "Team:");
@@ -73,6 +74,9 @@ impl<T: Clone + Solution<T>> fmt::Display for Team<T> {
                 writeln!(f, "\tGeometric annealing schedule");
                 writeln!(f, "\t\tinitial_temperature = {}", initial_temperature);
             }
+            TemperatureSchedule::None => {
+                writeln!(f, "\tNo annealing schedule");
+            }
         }
         match &self.parameters.operational_learning {
             OperationalLearning::Multinomial {
@@ -89,9 +93,12 @@ impl<T: Clone + Solution<T>> fmt::Display for Team<T> {
                 writeln!(f, "\tMultinomial learning style");
                 writeln!(f, "\t\tlearning rate = {}", learning_rate);
             }
-            OperationalLearning::HiddenMarkov { learning_rate } => {
+            OperationalLearning::HiddenMarkov { learning_rate, .. } => {
                 writeln!(f, "\tMultinomial learning style");
                 writeln!(f, "\t\tlearning rate = {}", learning_rate);
+            }
+            OperationalLearning::None => {
+                writeln!(f, "\tNo operational learning");
             }
         }
         writeln!(f, "\tself bias = {}", self.parameters.self_bias);
@@ -113,6 +120,6 @@ impl<T: Clone + Solution<T>> fmt::Display for Team<T> {
             );
         }
 
-        writeln!(f, "\n")
+        Ok(())
     }
 }

@@ -6,8 +6,6 @@ use crate::utilities::randomness::random_unit_draw;
 
 #[derive(Clone, Debug)]
 pub struct Agent<T> {
-    /// Agent_id
-    agent_id: usize,
     /// The iteration number as tracked by the agent
     iteration_number: u64,
     /// The lst operation performed by the agent
@@ -22,6 +20,20 @@ pub struct Agent<T> {
 }
 
 impl<T: Clone + Solution<T>> Agent<T> {
+    pub fn new(parameters: Parameters) -> Agent<T> {
+        let soln = T::generate_initial_solution();
+        Agent {
+            iteration_number: 1,
+            last_operation: 0,
+            temperature: 0.0,
+            current_solution_quality: soln.get_quality_scalar(),
+            best_quality_so_far: soln.get_quality_scalar(),
+            best_solution_so_far: soln.clone(),
+            current_solution: soln.clone(),
+            parameters,
+        }
+    }
+
     fn generate_candidate_solution(&mut self) -> T {
         let mut candidate = self.current_solution.clone();
         candidate.apply_move_operator(0, 1.0);
@@ -51,6 +63,8 @@ impl<T: Clone + Solution<T>> Agent<T> {
             }
         }
 
+        self.update_learning();
+
         // Update best solution
         if self.current_solution > self.best_solution_so_far {
             self.best_solution_so_far = self.current_solution.clone();
@@ -59,6 +73,15 @@ impl<T: Clone + Solution<T>> Agent<T> {
 
         // Increment iteration number
         self.iteration_number += 1;
+    }
+
+    fn update_learning(&mut self) {
+        match self.parameters.operational_learning {
+            OperationalLearning::Multinomial { .. } => {}
+            OperationalLearning::Markov { .. } => {}
+            OperationalLearning::HiddenMarkov { .. } => {}
+            _ => {}
+        }
     }
 
     fn update_temperature(&mut self) {
@@ -79,21 +102,7 @@ impl<T: Clone + Solution<T>> Agent<T> {
             } => {
                 self.temperature = initial_temperature / (self.iteration_number as f64);
             }
+            _ => {}
         }
-    }
-}
-
-pub fn build_agent<T: Solution<T> + Clone>(agent_id: usize, parameters: Parameters) -> Agent<T> {
-    let soln = T::generate_initial_solution();
-    Agent {
-        agent_id,
-        iteration_number: 1,
-        last_operation: 0,
-        temperature: 0.0,
-        current_solution_quality: soln.get_quality_scalar(),
-        best_quality_so_far: soln.get_quality_scalar(),
-        best_solution_so_far: soln.clone(),
-        current_solution: soln.clone(),
-        parameters,
     }
 }

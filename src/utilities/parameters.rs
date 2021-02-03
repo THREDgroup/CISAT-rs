@@ -11,6 +11,7 @@ pub enum TemperatureSchedule {
     Geometric {
         initial_temperature: f64,
     },
+    None,
 }
 
 #[non_exhaustive]
@@ -26,7 +27,10 @@ pub enum OperationalLearning {
     },
     HiddenMarkov {
         learning_rate: f64,
+        initial_transition_matrix: Vec<Vec<f64>>,
+        initial_emission_matrix: Vec<Vec<f64>>,
     },
+    None,
 }
 
 #[non_exhaustive]
@@ -45,11 +49,14 @@ pub struct Parameters {
     pub number_of_iterations: usize,
     pub temperature_schedule: TemperatureSchedule,
     pub operational_learning: OperationalLearning,
+    pub communication: CommunicationStyle,
     pub self_bias: f64,
     pub quality_bias: f64,
     pub satisficing_fraction: f64,
 }
 
 impl Parameters {
-    pub fn load_from_file(&mut self, file_name: String) {}
+    pub fn load_from_file(&mut self, file_name: String) {
+        unimplemented!()
+    }
 }
