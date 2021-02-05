@@ -1,7 +1,5 @@
-use cisat;
-
 fn main() {
-    let mut x: cisat::Cohort<cisat::problems::Ackley> = cisat::Cohort::new(cisat::Parameters {
+    let mut x = cisat::Cohort::<cisat::problems::Ackley>::new(cisat::Parameters {
         number_of_teams: 10,
         number_of_agents: 5,
         number_of_iterations: 10,
