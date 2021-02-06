@@ -1,3 +1,4 @@
+//! This is an example problem for designing truss structures
 use super::super::utilities::Solution;
 use std::{cmp::Ordering, ops::Sub};
 use trussx::Truss;

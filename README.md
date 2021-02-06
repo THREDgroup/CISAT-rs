@@ -4,6 +4,8 @@
 # About
 This is an implementation of the Cognitively-Inspired Simulated Annealing Teams (CISAT) Framework in Rust. 
 
+NOTE: This is currently an incomplete implementation.
+
 # Usage
 Here is a basic examples of usage
 

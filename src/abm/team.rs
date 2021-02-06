@@ -1,3 +1,5 @@
+//! This module contains the Team class, a set of interacting Agents
+
 use super::{
     super::utilities::{parameters::Parameters, Solution},
     agent::Agent,
@@ -5,13 +7,17 @@ use super::{
 use crate::{OperationalLearning, TemperatureSchedule};
 use std::fmt;
 
+/// This is the Team construct, which contains a set of Agents
 #[derive(Clone, Debug)]
 pub struct Team<T> {
-    pub parameters: Parameters,
+    /// The parameters that the team runs with
+    parameters: Parameters,
+    /// The agents contained in the team
     agent_list: Vec<Agent<T>>,
 }
 
 impl<T: Clone + Solution<T>> Team<T> {
+    /// This generates a new team
     pub fn new(parameters: Parameters) -> Team<T> {
         let mut agents = vec![Agent::new(parameters.clone()); parameters.number_of_agents];
         for i in 1..parameters.number_of_agents {
@@ -23,18 +29,21 @@ impl<T: Clone + Solution<T>> Team<T> {
         }
     }
 
+    /// This runs a bunch of iterations to solve
     pub fn solve(&mut self) {
         for _ in 0..self.parameters.number_of_iterations {
             self.iterate();
         }
     }
 
+    /// This runs a single iteration
     fn iterate(&mut self) {
         for i in 0..self.parameters.number_of_agents {
             self.agent_list[i].iterate();
         }
     }
 
+    /// This pulls out the best solution from teh team
     fn pull_best_solution(&mut self) -> T {
         let mut best_solution = self.agent_list[0].best_solution_so_far.clone();
         for i in 1..self.agent_list.len() {

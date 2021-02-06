@@ -17,4 +17,3 @@ pub use abm::cohort::Cohort;
 pub use abm::team::Team;
 
 pub mod problems;
-pub use problems::ackley::Ackley; //, structure::Structure};

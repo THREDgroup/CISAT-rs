@@ -1,9 +1,12 @@
+//! This is an example problem for optimizing the Ackley function
+
 use super::super::{
     utilities::randomness::{random_gaussian_vector, random_uniform_vector},
     utilities::Solution,
 };
 use std::{cmp::Ordering, ops::Sub};
 
+/// Specifically, we optimize Ackley in 5 dimensions
 const NUMBER_OF_DIMENSIONS: usize = 5;
 
 #[derive(Clone, Debug)]
