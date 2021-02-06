@@ -4,7 +4,13 @@ version = "0.1.0"
 authors = ["Chris McComb <ccmcc2012@gmail.com>"]
 edition = "2018"
 description = "Cognitively-Inspired Simulated Annealing Teams"
-
+readme = "README.md"
+repository = "https://github.com/cmccomb/cisat-rs"
+homepage = "https://github.com/cmccomb/cisat-rs"
+documentation = "https://docs.rs/cisat-rs"
+license = "MIT"
+keywords = ["simulation", "engineering-design", "teams", "agent-based-modeling"]
+categories = ["mathematics", "science", "simulation"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
