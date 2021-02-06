@@ -7,9 +7,13 @@ use std::{cmp::Ordering, ops::Sub};
 const NUMBER_OF_DIMENSIONS: usize = 5;
 
 #[derive(Clone, Debug)]
+/// This contains solutions for the Ackley problem
 pub struct Ackley {
+    /// This contains direct objective function values
     objective_function_value: Vec<f64>,
+    /// This contains a single quality scalar derived from objective function values
     quality_scalar: f64,
+    /// This contains the parameters
     x: Vec<f64>,
 }
 
@@ -41,6 +45,7 @@ impl Solution<Ackley> for Ackley {
 }
 
 impl Ackley {
+    /// This function offers some functionality for evaluation
     fn evaluate(&mut self) {
         let n = self.x.len();
         let mut fx = 0.0;
