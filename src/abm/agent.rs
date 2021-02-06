@@ -5,6 +5,7 @@ use super::super::utilities::{
 use crate::utilities::randomness::random_unit_draw;
 
 #[derive(Clone, Debug)]
+/// This is an agent, the fundamental building block for a CISAT team
 pub struct Agent<T> {
     /// The iteration number as tracked by the agent
     iteration_number: u64,
