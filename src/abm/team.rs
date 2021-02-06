@@ -9,7 +9,7 @@ use std::fmt;
 
 /// This is the Team construct, which contains a set of Agents
 #[derive(Clone, Debug)]
-pub struct Team<T> {
+pub(crate) struct Team<T> {
     /// The parameters that the team runs with
     parameters: Parameters,
     /// The agents contained in the team
@@ -18,7 +18,7 @@ pub struct Team<T> {
 
 impl<T: Clone + Solution<T>> Team<T> {
     /// This generates a new team
-    pub fn new(parameters: Parameters) -> Team<T> {
+    pub(crate) fn new(parameters: Parameters) -> Team<T> {
         let mut agents = vec![Agent::new(parameters.clone()); parameters.number_of_agents];
         for i in 1..parameters.number_of_agents {
             agents[i] = Agent::new(parameters.clone());
@@ -30,21 +30,21 @@ impl<T: Clone + Solution<T>> Team<T> {
     }
 
     /// This runs a bunch of iterations to solve
-    pub fn solve(&mut self) {
+    pub(crate) fn solve(&mut self) {
         for _ in 0..self.parameters.number_of_iterations {
             self.iterate();
         }
     }
 
     /// This runs a single iteration
-    fn iterate(&mut self) {
+    pub(crate) fn iterate(&mut self) {
         for i in 0..self.parameters.number_of_agents {
             self.agent_list[i].iterate();
         }
     }
 
     /// This pulls out the best solution from teh team
-    fn pull_best_solution(&mut self) -> T {
+    pub(crate) fn pull_best_solution(&mut self) -> T {
         let mut best_solution = self.agent_list[0].best_solution_so_far.clone();
         for i in 1..self.agent_list.len() {
             if best_solution > self.agent_list[i].best_solution_so_far {

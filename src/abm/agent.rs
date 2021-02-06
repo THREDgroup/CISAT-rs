@@ -60,11 +60,6 @@ impl<T: Clone + Solution<T>> Agent<T> {
 
         // Compare candidate
         if candidate > self.current_solution {
-            println!(
-                "{} is better than {}",
-                candidate.get_quality_scalar(),
-                self.current_solution.get_quality_scalar()
-            );
             self.current_solution = candidate;
         } else {
             let delta = candidate.clone() - self.current_solution.clone();

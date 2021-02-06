@@ -1,8 +1,9 @@
 //! This module contains the Parameters struct and a number of enums
+use strum_macros::EnumString;
 
 /// This enum carries temperature schedule options
 #[non_exhaustive]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, EnumString)]
 pub enum TemperatureSchedule {
     /// This is the Triki temperature schedule
     Triki {
@@ -27,7 +28,7 @@ pub enum TemperatureSchedule {
 
 /// This enum contains options for how the agent learns
 #[non_exhaustive]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, EnumString)]
 pub enum OperationalLearning {
     /// Reinforcement over the action set as a multinomial distribution
     Multinomial {
@@ -58,7 +59,7 @@ pub enum OperationalLearning {
 
 /// This enum contains options for agent interaction
 #[non_exhaustive]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, EnumString)]
 pub enum CommunicationStyle {
     /// Interaction based on a constatn frequency value
     ConstantFrequency {

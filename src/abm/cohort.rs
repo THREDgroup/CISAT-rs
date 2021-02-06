@@ -30,4 +30,22 @@ impl<T: Clone + Solution<T>> Cohort<T> {
             self.team_list[i].solve();
         }
     }
+
+    /// This runs a single iteration
+    pub fn iterate(&mut self) {
+        for i in 0..self.parameters.number_of_teams {
+            self.team_list[i].iterate();
+        }
+    }
+
+    /// Get the current best solution
+    pub fn get_best_solution(&mut self) -> f64 {
+        let mut best_solution = self.team_list[0].pull_best_solution();
+        for i in 1..self.team_list.len() {
+            if best_solution > self.team_list[i].pull_best_solution() {
+                best_solution = self.team_list[i].pull_best_solution();
+            }
+        }
+        best_solution.get_quality_scalar()
+    }
 }
