@@ -5,7 +5,6 @@ use super::{
     agent::Agent,
 };
 use crate::{OperationalLearning, TemperatureSchedule};
-use std::fmt;
 
 /// This is the Team construct, which contains a set of Agents
 #[derive(Clone, Debug)]
@@ -52,83 +51,5 @@ impl<T: Clone + Solution<T>> Team<T> {
             }
         }
         best_solution
-    }
-}
-
-#[allow(unused_must_use)]
-impl<T: Clone + Solution<T>> fmt::Display for Team<T> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        writeln!(f, "Team:");
-        writeln!(f, "\t{} agents", self.parameters.number_of_agents);
-        writeln!(f, "\t{} iterations", self.parameters.number_of_iterations);
-
-        match self.parameters.temperature_schedule {
-            TemperatureSchedule::Triki {
-                initial_temperature,
-                delta,
-            } => {
-                writeln!(f, "\tTriki annealing schedule");
-                writeln!(f, "\t\tinitial_temperature = {}", initial_temperature);
-                writeln!(f, "\t\tdelta = {}", delta);
-            }
-            TemperatureSchedule::Cauchy {
-                initial_temperature,
-            } => {
-                writeln!(f, "\tCauchy annealing schedule");
-                writeln!(f, "\t\tinitial_temperature = {}", initial_temperature);
-            }
-            TemperatureSchedule::Geometric {
-                initial_temperature,
-            } => {
-                writeln!(f, "\tGeometric annealing schedule");
-                writeln!(f, "\t\tinitial_temperature = {}", initial_temperature);
-            }
-            TemperatureSchedule::None => {
-                writeln!(f, "\tNo annealing schedule");
-            }
-        }
-        match &self.parameters.operational_learning {
-            OperationalLearning::Multinomial {
-                learning_rate,
-                initial_learning_matrix,
-            } => {
-                writeln!(f, "\tMultinomial learning style");
-                writeln!(f, "\t\tlearning rate = {}", learning_rate);
-            }
-            OperationalLearning::Markov {
-                learning_rate,
-                initial_learning_matrix,
-            } => {
-                writeln!(f, "\tMultinomial learning style");
-                writeln!(f, "\t\tlearning rate = {}", learning_rate);
-            }
-            OperationalLearning::HiddenMarkov { learning_rate, .. } => {
-                writeln!(f, "\tMultinomial learning style");
-                writeln!(f, "\t\tlearning rate = {}", learning_rate);
-            }
-            OperationalLearning::None => {
-                writeln!(f, "\tNo operational learning");
-            }
-        }
-        writeln!(f, "\tself bias = {}", self.parameters.self_bias);
-        writeln!(f, "\tquality bias = {}", self.parameters.quality_bias);
-        writeln!(
-            f,
-            "\tsatisficing fraction = {}",
-            self.parameters.satisficing_fraction
-        );
-
-        writeln!(f, "Agents in team:");
-        for i in 0..self.agent_list.len() {
-            writeln!(f, "\tAgent {}:", i);
-            writeln!(f, "\t\ttemperature = {}", self.agent_list[i].temperature);
-            writeln!(
-                f,
-                "\t\tquality = {}",
-                self.agent_list[i].best_quality_so_far
-            );
-        }
-
-        Ok(())
     }
 }

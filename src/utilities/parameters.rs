@@ -1,4 +1,5 @@
 //! This module contains the Parameters struct and a number of enums
+use std::fmt;
 use strum_macros::EnumString;
 
 /// This enum carries temperature schedule options
@@ -125,5 +126,66 @@ impl Default for Parameters {
             quality_bias: 1.0,
             satisficing_fraction: 0.5,
         }
+    }
+}
+
+#[allow(unused_must_use)]
+impl fmt::Display for Parameters {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(f, " - {} agents", self.number_of_agents);
+        writeln!(f, " - {} iterations", self.number_of_iterations);
+
+        match self.temperature_schedule {
+            TemperatureSchedule::Triki {
+                initial_temperature,
+                delta,
+            } => {
+                writeln!(f, " - Triki annealing schedule");
+                writeln!(f, "    - initial_temperature = {}", initial_temperature);
+                writeln!(f, "    - delta = {}", delta);
+            }
+            TemperatureSchedule::Cauchy {
+                initial_temperature,
+            } => {
+                writeln!(f, " - Cauchy annealing schedule");
+                writeln!(f, "    - initial_temperature = {}", initial_temperature);
+            }
+            TemperatureSchedule::Geometric {
+                initial_temperature,
+            } => {
+                writeln!(f, " - Geometric annealing schedule");
+                writeln!(f, "    - initial_temperature = {}", initial_temperature);
+            }
+            TemperatureSchedule::None => {
+                writeln!(f, " - No annealing schedule");
+            }
+        }
+        match &self.operational_learning {
+            OperationalLearning::Multinomial {
+                learning_rate,
+                initial_learning_matrix,
+            } => {
+                writeln!(f, " - Multinomial learning style");
+                writeln!(f, "    - learning rate = {}", learning_rate);
+            }
+            OperationalLearning::Markov {
+                learning_rate,
+                initial_learning_matrix,
+            } => {
+                writeln!(f, " - Markov Chain learning style");
+                writeln!(f, "    - learning rate = {}", learning_rate);
+            }
+            OperationalLearning::HiddenMarkov { learning_rate, .. } => {
+                writeln!(f, " - Hidden Markov learning style");
+                writeln!(f, "    - learning rate = {}", learning_rate);
+            }
+            OperationalLearning::None => {
+                writeln!(f, " - No operational learning");
+            }
+        }
+        writeln!(f, " - self bias = {}", self.self_bias);
+        writeln!(f, " - quality bias = {}", self.quality_bias);
+        writeln!(f, " - satisficing fraction = {}", self.satisficing_fraction);
+        Ok(())
     }
 }
