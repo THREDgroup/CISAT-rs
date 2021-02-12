@@ -27,9 +27,18 @@ pub(crate) struct Agent<T> {
     parameters: Parameters,
 }
 
-impl<T: Clone + Solution<T>> Agent<T> {
-    /// This generates a new Agent
-    pub(crate) fn new(parameters: Parameters) -> Agent<T> {
+/// This is a trait for implementing new agents
+pub trait AgentMethods<T: Solution<T>> {
+    /// Generates a new agent
+    fn new(parameters: Parameters) -> Self;
+    /// Iterates on the solution
+    fn iterate(&mut self);
+    /// Gets the best solution found by the agent so far
+    fn get_best_solution_so_far(&mut self) -> T;
+}
+
+impl<T: Solution<T>> AgentMethods<T> for Agent<T> {
+    fn new(parameters: Parameters) -> Self {
         let solution = T::generate_initial_solution();
         Agent {
             iteration_number: 1,
@@ -43,15 +52,7 @@ impl<T: Clone + Solution<T>> Agent<T> {
         }
     }
 
-    /// This generates a new candidate solution for the agent
-    fn generate_candidate_solution(&mut self) -> T {
-        let mut candidate = self.current_solution.clone();
-        candidate.apply_move_operator(0, 1.0);
-        candidate
-    }
-
-    /// This takes the agent one iteration forward
-    pub(crate) fn iterate(&mut self) {
+    fn iterate(&mut self) {
         // Update temperature
         self.update_temperature();
 
@@ -79,6 +80,19 @@ impl<T: Clone + Solution<T>> Agent<T> {
 
         // Increment iteration number
         self.iteration_number += 1;
+    }
+
+    fn get_best_solution_so_far(&mut self) -> T {
+        self.best_solution_so_far.clone()
+    }
+}
+
+impl<T: Solution<T>> Agent<T> {
+    /// This generates a new candidate solution for the agent
+    fn generate_candidate_solution(&mut self) -> T {
+        let mut candidate = self.current_solution.clone();
+        candidate.apply_move_operator(0, 1.0);
+        candidate
     }
 
     /// This updates the agent's learning

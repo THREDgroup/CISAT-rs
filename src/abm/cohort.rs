@@ -2,7 +2,7 @@
 
 use super::{
     super::utilities::{parameters::Parameters, Solution},
-    team::Team,
+    team::{Team, TeamMethods},
 };
 use rayon::prelude::*;
 
@@ -18,10 +18,11 @@ pub struct Cohort<T> {
 impl<T: Clone + Solution<T>> Cohort<T> {
     /// This generates a new cohort
     pub fn new(parameters: Parameters) -> Cohort<T> {
-        let teams = vec![Team::new(parameters.clone()); parameters.number_of_teams];
         Cohort {
+            team_list: (0..parameters.number_of_agents)
+                .map(|_| Team::new(parameters.clone()))
+                .collect(),
             parameters,
-            team_list: teams,
         }
     }
 
@@ -36,13 +37,13 @@ impl<T: Clone + Solution<T>> Cohort<T> {
     }
 
     /// Get the current best solution
-    pub fn get_best_solution(&mut self) -> f64 {
-        let mut best_solution = self.team_list[0].pull_best_solution();
-        for i in 1..self.team_list.len() {
-            if best_solution > self.team_list[i].pull_best_solution() {
-                best_solution = self.team_list[i].pull_best_solution();
-            }
-        }
-        best_solution.get_quality_scalar()
+    pub fn get_best_solution_so_far(&mut self) -> f64 {
+        (0..self.parameters.number_of_teams)
+            .map(|i| self.team_list[i].get_best_solution_so_far())
+            .collect::<Vec<T>>()
+            .into_iter()
+            .max()
+            .unwrap()
+            .get_quality_scalar()
     }
 }

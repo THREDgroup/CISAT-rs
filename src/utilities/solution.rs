@@ -1,10 +1,11 @@
 //! This module contains the Solution trait, which can be used to implement new Solution types
 
+use std::fmt::Debug;
 use std::ops::Sub;
 
 /// This trait is the Solution trait, which provides the necessary pieces for a problem to
 /// interface with CISAT
-pub trait Solution<T>: PartialOrd + Sub<Output = f64> + Sized + Send {
+pub trait Solution<T>: PartialOrd + Sub<Output = f64> + Sized + Send + Ord + Clone + Debug {
     /// A problem must have a number of move operators specified
     const NUMBER_OF_MOVE_OPERATORS: usize;
     /// A problem must have a number of objectives specified
