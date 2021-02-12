@@ -4,6 +4,7 @@ use super::{
     super::utilities::{parameters::Parameters, Solution},
     team::Team,
 };
+use rayon::prelude::*;
 
 /// This is the Cohort class, a container for multiple teams
 #[derive(Clone, Debug)]
@@ -24,18 +25,14 @@ impl<T: Clone + Solution<T>> Cohort<T> {
         }
     }
 
-    /// This runs the cohort
+    /// This runs the cohort using parallelism
     pub fn solve(&mut self) {
-        for i in 0..self.parameters.number_of_teams {
-            self.team_list[i].solve();
-        }
+        self.team_list.par_iter_mut().for_each(|x| x.solve());
     }
 
     /// This runs a single iteration
     pub fn iterate(&mut self) {
-        for i in 0..self.parameters.number_of_teams {
-            self.team_list[i].iterate();
-        }
+        self.team_list.iter_mut().for_each(|x| x.iterate());
     }
 
     /// Get the current best solution

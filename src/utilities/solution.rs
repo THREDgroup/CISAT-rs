@@ -4,7 +4,7 @@ use std::ops::Sub;
 
 /// This trait is the Solution trait, which provides the necessary pieces for a problem to
 /// interface with CISAT
-pub trait Solution<T>: PartialOrd + Sub<Output = f64> + Sized {
+pub trait Solution<T>: PartialOrd + Sub<Output = f64> + Sized + Send {
     /// A problem must have a number of move operators specified
     const NUMBER_OF_MOVE_OPERATORS: usize;
     /// A problem must have a number of objectives specified

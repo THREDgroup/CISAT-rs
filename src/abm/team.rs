@@ -19,6 +19,7 @@ impl<T: Clone + Solution<T>> Team<T> {
     /// This generates a new team
     pub(crate) fn new(parameters: Parameters) -> Team<T> {
         let mut agents = vec![Agent::new(parameters.clone()); parameters.number_of_agents];
+
         for i in 1..parameters.number_of_agents {
             agents[i] = Agent::new(parameters.clone());
         }
@@ -37,9 +38,7 @@ impl<T: Clone + Solution<T>> Team<T> {
 
     /// This runs a single iteration
     pub(crate) fn iterate(&mut self) {
-        for i in 0..self.parameters.number_of_agents {
-            self.agent_list[i].iterate();
-        }
+        self.agent_list.iter_mut().for_each(|x| x.iterate());
     }
 
     /// This pulls out the best solution from teh team

@@ -5,6 +5,7 @@ use structopt::StructOpt;
 
 /// Simulates team problem-solving using the Cognitively-Inspired Simulated Annealing Teams (CISAT) framework.
 #[derive(StructOpt, Debug)]
+#[structopt(author, name = "CISAT")]
 struct Cli {
     /// Makes CISAT very, very chatty
     #[structopt(short, long)]
@@ -128,11 +129,12 @@ fn main() {
     match args.problem.to_lowercase().as_str() {
         "ackley" => {
             let mut cisat = cisat::Cohort::<cisat::problems::Ackley>::new(params);
-            for _ in 1..args.iter {
-                cisat.iterate();
-                bar.set_message(format!("Best: {:.2}", cisat.get_best_solution()).as_str());
-                bar.inc(1);
-            }
+            // for _ in 1..args.iter {
+            //     cisat.iterate();
+            //     bar.set_message(format!("Best: {:.2}", cisat.get_best_solution()).as_str());
+            //     bar.inc(1);
+            // }
+            cisat.solve();
             bar.finish_and_clear();
             println!(
                 "Done! The simulation took {}, and the best solution found was {:.2}.",
