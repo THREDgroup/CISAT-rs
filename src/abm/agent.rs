@@ -4,6 +4,7 @@ use super::super::utilities::{
     parameters::{OperationalLearning, Parameters, TemperatureSchedule},
     Solution,
 };
+use crate::problems::Ackley;
 use crate::utilities::randomness::random_unit_draw;
 
 /// This is an agent, the fundamental building block for a CISAT team

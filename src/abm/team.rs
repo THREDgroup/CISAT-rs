@@ -4,6 +4,8 @@ use super::{
     super::utilities::{parameters::Parameters, Solution},
     agent::AgentMethods,
 };
+use crate::problems::Ackley;
+use crate::Agent;
 use std::marker::PhantomData;
 
 /// This is the Team construct, which contains a set of Agents
@@ -22,11 +24,7 @@ where
 }
 
 /// This is a trait for implementing new teams
-pub trait TeamMethods<S, A>: Send
-where
-    S: Solution,
-    A: AgentMethods<S>,
-{
+pub trait TeamMethods<S: Solution, A: AgentMethods<S> = Agent<S>>: Send {
     /// Generates a new agent
     fn new(parameters: Parameters) -> Self;
     /// Iterates on the solution
