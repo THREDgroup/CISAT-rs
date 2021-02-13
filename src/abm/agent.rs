@@ -28,7 +28,7 @@ pub struct Agent<S: Solution> {
 }
 
 /// This is a trait for implementing new agents
-pub trait AgentMethods<S: Solution> {
+pub trait AgentMethods<S: Solution>: Send {
     /// Generates a new agent
     fn new(parameters: Parameters) -> Self;
     /// Iterates on the solution

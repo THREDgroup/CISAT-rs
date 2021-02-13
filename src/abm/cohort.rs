@@ -20,8 +20,10 @@ where
     parameters: Parameters,
     /// This contains the teams in the cohort
     team_list: Vec<T>,
-    phantom1: PhantomData<S>,
-    phantom2: PhantomData<A>,
+    /// Bookkeeping the solution type
+    solution_type: PhantomData<S>,
+    /// Bookkeeping the agent-type
+    agent_type: PhantomData<A>,
 }
 
 impl<S, A, T> Cohort<S, A, T>
@@ -36,15 +38,15 @@ where
             team_list: (0..parameters.number_of_agents)
                 .map(|_| T::new(parameters.clone()))
                 .collect(),
-            phantom1: Default::default(),
+            solution_type: Default::default(),
             parameters,
-            phantom2: Default::default(),
+            agent_type: Default::default(),
         }
     }
 
     /// This runs the cohort using parallelism
     pub fn solve(&mut self) {
-        self.team_list.iter_mut().for_each(|x| x.solve());
+        self.team_list.par_iter_mut().for_each(|x| x.solve());
     }
 
     /// This runs a single iteration

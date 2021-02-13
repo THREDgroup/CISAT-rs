@@ -21,7 +21,7 @@ where
 }
 
 /// This is a trait for implementing new teams
-pub trait TeamMethods<S, A>
+pub trait TeamMethods<S, A>: Send
 where
     S: Solution,
     A: AgentMethods<S>,

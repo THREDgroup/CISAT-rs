@@ -6,15 +6,15 @@
 //! This crate contains an implementation of the Cognitively-Inspired Simulated Annealing Teams \
 //! (CISAT) framework.
 
-mod utilities;
+pub mod utilities;
 pub use utilities::{
     parameters::{CommunicationStyle, OperationalLearning, Parameters, TemperatureSchedule},
     Solution,
 };
 
 mod abm;
-pub use abm::agent::Agent;
+pub use abm::agent::{Agent, AgentMethods};
 pub use abm::cohort::Cohort;
-pub use abm::team::Team;
+pub use abm::team::{Team, TeamMethods};
 
 pub mod problems;
