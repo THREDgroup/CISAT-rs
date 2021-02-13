@@ -13,6 +13,8 @@ pub use utilities::{
 };
 
 mod abm;
+pub use abm::agent::Agent;
 pub use abm::cohort::Cohort;
+pub use abm::team::Team;
 
 pub mod problems;

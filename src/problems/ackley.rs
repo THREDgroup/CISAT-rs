@@ -20,7 +20,7 @@ pub struct Ackley {
     x: Vec<f64>,
 }
 
-impl Solution<Ackley> for Ackley {
+impl Solution for Ackley {
     const NUMBER_OF_MOVE_OPERATORS: usize = 1;
     const NUMBER_OF_OBJECTIVES: usize = 1;
 

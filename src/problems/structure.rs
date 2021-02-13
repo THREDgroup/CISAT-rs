@@ -14,7 +14,7 @@ pub struct Structure {
     objective_function_value: Vec<f64>,
 }
 
-impl Solution<Structure> for Structure {
+impl Solution for Structure {
     const NUMBER_OF_MOVE_OPERATORS: usize = 1;
     const NUMBER_OF_OBJECTIVES: usize = 1;
     fn generate_initial_solution() -> Structure {

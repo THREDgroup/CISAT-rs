@@ -8,7 +8,7 @@ use crate::utilities::randomness::random_unit_draw;
 
 /// This is an agent, the fundamental building block for a CISAT team
 #[derive(Clone, Debug)]
-pub(crate) struct Agent<T> {
+pub struct Agent<S: Solution> {
     /// The iteration number as tracked by the agent
     iteration_number: u64,
     /// The lst operation performed by the agent
@@ -18,28 +18,28 @@ pub(crate) struct Agent<T> {
     /// The current solution quality scalar of the agent
     current_solution_quality: f64,
     /// The current solution of the agent
-    current_solution: T,
+    current_solution: S,
     /// The best quality so far for the agent
     pub(crate) best_quality_so_far: f64,
     /// The best solution so far for the agent
-    pub(crate) best_solution_so_far: T,
+    pub(crate) best_solution_so_far: S,
     /// The parameters container
     parameters: Parameters,
 }
 
 /// This is a trait for implementing new agents
-pub trait AgentMethods<T: Solution<T>> {
+pub trait AgentMethods<S: Solution> {
     /// Generates a new agent
     fn new(parameters: Parameters) -> Self;
     /// Iterates on the solution
     fn iterate(&mut self);
     /// Gets the best solution found by the agent so far
-    fn get_best_solution_so_far(&mut self) -> T;
+    fn get_best_solution_so_far(&mut self) -> S;
 }
 
-impl<T: Solution<T>> AgentMethods<T> for Agent<T> {
+impl<S: Solution> AgentMethods<S> for Agent<S> {
     fn new(parameters: Parameters) -> Self {
-        let solution = T::generate_initial_solution();
+        let solution = S::generate_initial_solution();
         Agent {
             iteration_number: 1,
             last_operation: 0,
@@ -82,14 +82,14 @@ impl<T: Solution<T>> AgentMethods<T> for Agent<T> {
         self.iteration_number += 1;
     }
 
-    fn get_best_solution_so_far(&mut self) -> T {
+    fn get_best_solution_so_far(&mut self) -> S {
         self.best_solution_so_far.clone()
     }
 }
 
-impl<T: Solution<T>> Agent<T> {
+impl<S: Solution> Agent<S> {
     /// This generates a new candidate solution for the agent
-    fn generate_candidate_solution(&mut self) -> T {
+    fn generate_candidate_solution(&mut self) -> S {
         let mut candidate = self.current_solution.clone();
         candidate.apply_move_operator(0, 1.0);
         candidate

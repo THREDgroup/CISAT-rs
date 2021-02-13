@@ -128,7 +128,11 @@ fn main() {
     bar.set_message("Starting...");
     match args.problem.to_lowercase().as_str() {
         "ackley" => {
-            let mut cisat = cisat::Cohort::<cisat::problems::Ackley>::new(params);
+            let mut cisat = cisat::Cohort::<
+                cisat::problems::Ackley,
+                cisat::Agent<cisat::problems::Ackley>,
+                cisat::Team<cisat::problems::Ackley, cisat::Agent<cisat::problems::Ackley>>,
+            >::new(params);
             // for _ in 1..args.iter {
             //     cisat.iterate();
             //     bar.set_message(format!("Best: {:.2}", cisat.get_best_solution()).as_str());
@@ -143,7 +147,11 @@ fn main() {
             );
         }
         "structure" => {
-            let mut cisat = cisat::Cohort::<cisat::problems::Structure>::new(params);
+            let mut cisat = cisat::Cohort::<
+                cisat::problems::Ackley,
+                cisat::Agent<cisat::problems::Ackley>,
+                cisat::Team<cisat::problems::Ackley, cisat::Agent<cisat::problems::Ackley>>,
+            >::new(params);
             for _ in 1..args.iter {
                 cisat.iterate();
                 bar.set_message(format!("Best: {:.2}", cisat.get_best_solution_so_far()).as_str());

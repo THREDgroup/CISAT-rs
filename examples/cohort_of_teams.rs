@@ -1,5 +1,8 @@
 fn main() {
-    let mut x = cisat::Cohort::<cisat::problems::Ackley>::new(cisat::Parameters::default());
+    type S = cisat::problems::Ackley;
+    type A = cisat::Agent<S>;
+    type T = cisat::Team<S, A>;
+    let mut x = cisat::Cohort::<S, A, T>::new(cisat::Parameters::default());
 
     x.solve();
 

@@ -2,20 +2,30 @@
 
 use super::{
     super::utilities::{parameters::Parameters, Solution},
-    agent::{Agent, AgentMethods},
+    agent::AgentMethods,
 };
+use std::marker::PhantomData;
 
 /// This is the Team construct, which contains a set of Agents
 #[derive(Clone, Debug)]
-pub(crate) struct Team<T> {
+pub struct Team<S, A>
+where
+    S: Solution,
+    A: AgentMethods<S>,
+{
     /// The parameters that the team runs with
     parameters: Parameters,
     /// The agents contained in the team
-    agent_list: Vec<Agent<T>>,
+    agent_list: Vec<A>,
+    phantom: PhantomData<S>,
 }
 
 /// This is a trait for implementing new teams
-pub trait TeamMethods<T: Solution<T>> {
+pub trait TeamMethods<S, A>
+where
+    S: Solution,
+    A: AgentMethods<S>,
+{
     /// Generates a new agent
     fn new(parameters: Parameters) -> Self;
     /// Iterates on the solution
@@ -23,17 +33,22 @@ pub trait TeamMethods<T: Solution<T>> {
     /// Solves all the way for a solution
     fn solve(&mut self);
     /// Gets the best solution found by the team so far
-    fn get_best_solution_so_far(&mut self) -> T;
+    fn get_best_solution_so_far(&mut self) -> S;
 }
 
-impl<T: Clone + Solution<T>> TeamMethods<T> for Team<T> {
+impl<S, A> TeamMethods<S, A> for Team<S, A>
+where
+    S: Solution,
+    A: AgentMethods<S>,
+{
     /// This generates a new team
-    fn new(parameters: Parameters) -> Team<T> {
+    fn new(parameters: Parameters) -> Self {
         Team {
             agent_list: (0..parameters.number_of_agents)
-                .map(|_| Agent::new(parameters.clone()))
+                .map(|_| A::new(parameters.clone()))
                 .collect(),
             parameters,
+            phantom: Default::default(),
         }
     }
 
@@ -50,10 +65,10 @@ impl<T: Clone + Solution<T>> TeamMethods<T> for Team<T> {
     }
 
     /// This pulls out the best solution from the team
-    fn get_best_solution_so_far(&mut self) -> T {
+    fn get_best_solution_so_far(&mut self) -> S {
         (0..self.parameters.number_of_agents)
             .map(|i| self.agent_list[i].get_best_solution_so_far())
-            .collect::<Vec<T>>()
+            .collect::<Vec<S>>()
             .into_iter()
             .max()
             .unwrap()
