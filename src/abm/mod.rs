@@ -1,4 +1,6 @@
-//! This module contains the core agent-based model implementation for CISAT, including
+//! This module contains the core agent-based model implementation for CISAT
+//!
+//! This includes the following `struct`s:
 //! - Agents
 //! - Teams (sets of agents)
 //! - Cohorts (sets of teams)

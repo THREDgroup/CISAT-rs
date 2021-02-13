@@ -1,4 +1,4 @@
-//! This module contains the Cohort class, a container for multiple Teams
+//! This module contains the Cohort class, a container for multiple Teams.
 
 use super::{
     super::utilities::{parameters::Parameters, Solution},
@@ -10,6 +10,30 @@ use rayon::prelude::*;
 use std::marker::PhantomData;
 
 /// This is the Cohort class, a container for multiple teams
+///
+/// The cohort allows you to run a set of teams easily to achieve statistical significance:
+/// ```
+/// use cisat::{Parameters, Cohort, problems::Ackley};
+/// let mut x = Cohort::<Ackley>::new(Parameters::default());
+/// x.solve();
+/// ```
+///Above, we specify one generic parameters `Ackley`, which tells the `Cohort` which problem to solve.
+/// However, we can get more complciated than that! For instance, we feed in a struct that implements
+/// `AgentMethods` to specific which type of agent to use:
+/// ```
+/// use cisat::{Parameters, Cohort, problems::Ackley, Agent};
+/// let mut x = Cohort::<Ackley, Agent<Ackley>>::new(Parameters::default());
+/// x.solve();
+/// ```
+/// Here, we just fed in the in-build `Agent` class which already implements `AgentMethods`. You can
+/// implement the trait yourself to define a new agent though. The same applies for 'Team' and
+/// 'TeamMethods':
+/// ```
+/// use cisat::{Parameters, Cohort, problems::Ackley, Agent, Team};
+/// let mut x = Cohort::<Ackley, Agent<Ackley>, Team<Ackley, Agent<Ackley>>>::new(Parameters::default());
+/// x.solve();
+/// ```
+
 #[derive(Clone, Debug)]
 pub struct Cohort<S, A = Agent<S>, T = Team<S, A>>
 where

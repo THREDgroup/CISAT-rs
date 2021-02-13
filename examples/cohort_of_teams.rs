@@ -1,5 +1,7 @@
+use cisat::problems::Ackley;
+use cisat::{Cohort, Parameters};
 fn main() {
-    let mut x = cisat::Cohort::<cisat::problems::Ackley>::new(cisat::Parameters::default());
+    let mut x = Cohort::<Ackley>::new(Parameters::default());
 
     x.solve();
 
