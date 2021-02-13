@@ -6,7 +6,7 @@
 //! This crate contains an implementation of the Cognitively-Inspired Simulated Annealing Teams \
 //! (CISAT) framework.
 
-pub mod utilities;
+mod utilities;
 pub use utilities::{
     parameters::{CommunicationStyle, OperationalLearning, Parameters, TemperatureSchedule},
     Solution,

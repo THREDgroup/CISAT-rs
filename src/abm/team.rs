@@ -17,7 +17,8 @@ where
     parameters: Parameters,
     /// The agents contained in the team
     agent_list: Vec<A>,
-    phantom: PhantomData<S>,
+    /// Bookkeeping the solution type
+    solution_type: PhantomData<S>,
 }
 
 /// This is a trait for implementing new teams
@@ -48,7 +49,7 @@ where
                 .map(|_| A::new(parameters.clone()))
                 .collect(),
             parameters,
-            phantom: Default::default(),
+            solution_type: Default::default(),
         }
     }
 
