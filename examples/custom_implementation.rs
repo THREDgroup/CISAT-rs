@@ -9,7 +9,7 @@ impl Solution for CustomProblem {
     const NUMBER_OF_MOVE_OPERATORS: usize = 0;
     const NUMBER_OF_OBJECTIVES: usize = 0;
 
-    fn generate_initial_solution() -> Self {
+    fn new() -> Self {
         unimplemented!()
     }
 

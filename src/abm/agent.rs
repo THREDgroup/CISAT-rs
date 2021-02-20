@@ -41,7 +41,7 @@ pub trait AgentMethods<S: Solution>: Send {
 
 impl<S: Solution> AgentMethods<S> for Agent<S> {
     fn new(parameters: Parameters) -> Self {
-        let solution = S::generate_initial_solution();
+        let solution = S::new();
         Agent {
             iteration_number: 1,
             last_operation: 0,
@@ -128,5 +128,12 @@ impl<S: Solution> Agent<S> {
             }
             _ => {}
         }
+    }
+}
+
+/// Implement default for solution
+impl<S: Solution> Default for Agent<S> {
+    fn default() -> Self {
+        Agent::new(Default::default())
     }
 }

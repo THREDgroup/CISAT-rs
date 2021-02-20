@@ -17,7 +17,7 @@ pub struct Structure {
 impl Solution for Structure {
     const NUMBER_OF_MOVE_OPERATORS: usize = 1;
     const NUMBER_OF_OBJECTIVES: usize = 1;
-    fn generate_initial_solution() -> Structure {
+    fn new() -> Structure {
         Structure {
             truss: Truss::new(),
             quality_scalar: 0.0,

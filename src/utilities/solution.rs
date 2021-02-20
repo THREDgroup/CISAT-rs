@@ -10,8 +10,8 @@ pub trait Solution: PartialOrd + Sub<Output = f64> + Sized + Send + Ord + Clone 
     const NUMBER_OF_MOVE_OPERATORS: usize;
     /// A problem must have a number of objectives specified
     const NUMBER_OF_OBJECTIVES: usize;
-    /// A problem must have a means for generating an initia solution
-    fn generate_initial_solution() -> Self;
+    /// A problem must have a means for generating an new solution
+    fn new() -> Self;
     /// A problem must have a way to apply move operators to itself
     fn apply_move_operator(&mut self, move_index: usize, temperature: f64);
     /// A problem must have a mapping to a quality scalar

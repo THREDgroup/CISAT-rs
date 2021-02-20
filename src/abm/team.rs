@@ -72,3 +72,13 @@ where
             .unwrap()
     }
 }
+
+impl<S, A> Default for Team<S, A>
+where
+    S: Solution,
+    A: AgentMethods<S>,
+{
+    fn default() -> Self {
+        Team::new(Default::default())
+    }
+}
