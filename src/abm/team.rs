@@ -4,7 +4,6 @@ use super::{
     super::utilities::{parameters::Parameters, Solution},
     agent::AgentMethods,
 };
-use crate::problems::Ackley;
 use crate::Agent;
 use std::marker::PhantomData;
 

@@ -35,7 +35,7 @@ use std::marker::PhantomData;
 /// ```
 
 #[derive(Clone, Debug)]
-pub struct Cohort<S, A = Agent<S>, T = Team<S, A>>
+pub struct Cohort<S = Ackley, A = Agent<S>, T = Team<S, A>>
 where
     S: Solution,
     A: AgentMethods<S>,
@@ -105,5 +105,11 @@ where
             .max()
             .unwrap()
             .get_quality_scalar()
+    }
+}
+
+impl Default for Cohort {
+    fn default() -> Self {
+        Cohort::new(Default::default())
     }
 }
