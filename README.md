@@ -18,8 +18,7 @@ This is currently an incomplete implementation. Progress on CISAT characteristic
 Here is a basic examples of usage
 
 ```rust
-use cisat::problems::Ackley;
-use cisat::{Cohort, Parameters};
+use cisat::{Cohort, Parameters, problems::Ackley};
 fn main() {
     let mut x = Cohort::<Ackley>::new(Parameters::default());
 

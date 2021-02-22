@@ -18,15 +18,15 @@ pub struct Agent<S: Solution> {
     /// The lst operation performed by the agent
     last_operation: u64,
     /// The temperature used by the agent
-    pub(crate) temperature: f64,
+    temperature: f64,
     /// The current solution quality scalar of the agent
     current_solution_quality: f64,
     /// The current solution of the agent
     current_solution: S,
     /// The best quality so far for the agent
-    pub(crate) best_quality_so_far: f64,
+    best_quality_so_far: f64,
     /// The best solution so far for the agent
-    pub(crate) best_solution_so_far: S,
+    best_solution_so_far: S,
     /// The parameters container
     parameters: Parameters,
 }
@@ -111,7 +111,6 @@ impl<S: Solution> AgentMethods<S> for Agent<S> {
         qualities[self.id] += self.parameters.self_bias;
 
         // Choose solution
-        println!("{:?}", qualities);
         let idx = multinomial_draw(qualities);
 
         // Extract the design

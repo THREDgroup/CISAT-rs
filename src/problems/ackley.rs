@@ -27,7 +27,7 @@ impl Solution for Ackley {
     fn new() -> Ackley {
         let mut solution = Ackley {
             objective_function_value: vec![0.0; Ackley::NUMBER_OF_OBJECTIVES],
-            x: random_uniform_vector(NUMBER_OF_DIMENSIONS, -5.0, 5.0),
+            x: random_uniform_vector(NUMBER_OF_DIMENSIONS, -10.0, 10.0),
             quality_scalar: 0.0,
         };
         solution.evaluate();
@@ -35,9 +35,13 @@ impl Solution for Ackley {
     }
 
     fn apply_move_operator(&mut self, _move_index: usize, temperature: f64) {
-        let perturbation = random_gaussian_vector(self.x.len(), 0.0, temperature);
+        let perturbation_arg = random_uniform_vector(
+            self.x.len(),
+            -std::f64::consts::PI / 2.0,
+            std::f64::consts::PI / 2.0,
+        );
         for i in 0..self.x.len() {
-            self.x[i] += perturbation[i];
+            self.x[i] += perturbation_arg[i].tan() * temperature;
         }
         self.evaluate();
     }
