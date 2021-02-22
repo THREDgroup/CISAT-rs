@@ -1,10 +1,10 @@
 //! This module contains the Parameters struct and a number of enums
 use std::fmt;
-use strum_macros::EnumString;
+// use strum_macros::EnumString;
 
 /// This enum carries temperature schedule options
 #[non_exhaustive]
-#[derive(Clone, Debug, EnumString)]
+#[derive(Clone, Debug)]
 pub enum TemperatureSchedule {
     /// This is the Triki temperature schedule
     Triki {
@@ -29,7 +29,7 @@ pub enum TemperatureSchedule {
 
 /// This enum contains options for how the agent learns
 #[non_exhaustive]
-#[derive(Clone, Debug, EnumString)]
+#[derive(Clone, Debug)]
 pub enum OperationalLearning {
     /// Reinforcement over the action set as a multinomial distribution
     Multinomial {
@@ -60,7 +60,7 @@ pub enum OperationalLearning {
 
 /// This enum contains options for agent interaction
 #[non_exhaustive]
-#[derive(Clone, Debug, EnumString)]
+#[derive(Clone, Debug)]
 pub enum CommunicationStyle {
     /// Interaction based on a constatn frequency value
     ConstantFrequency {
@@ -115,6 +115,20 @@ impl Parameters {
             panic!("The satisficing fraction must be between 0 and 1 inclusive.");
         }
     }
+    /// Returns values necessary to run HSAT
+    pub fn hsat() -> Self {
+        Parameters {
+            temperature_schedule: TemperatureSchedule::Triki {
+                initial_temperature: 100.0,
+                delta: 0.05,
+            },
+            communication: CommunicationStyle::RegularInterval { interval: 1 },
+            self_bias: 0.0,
+            quality_bias: 0.0,
+            satisficing_fraction: 0.0,
+            ..Default::default()
+        }
+    }
 }
 
 impl Default for Parameters {
@@ -138,6 +152,7 @@ impl Default for Parameters {
 #[allow(unused_must_use)]
 impl fmt::Display for Parameters {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(f, " - {} teams", self.number_of_teams);
         writeln!(f, " - {} agents", self.number_of_agents);
         writeln!(f, " - {} iterations", self.number_of_iterations);
 
