@@ -129,26 +129,12 @@ fn main() {
     match args.problem.to_lowercase().as_str() {
         "ackley" => {
             let mut cisat = cisat::Cohort::<cisat::problems::Ackley>::new(params);
-            // for _ in 1..args.iter {
-            //     cisat.iterate();
-            //     bar.set_message(format!("Best: {:.2}", cisat.get_best_solution()).as_str());
-            //     bar.inc(1);
-            // }
-            cisat.solve();
-            bar.finish_and_clear();
-            println!(
-                "Done! The simulation took {}, and the best solution found was {:.2}.",
-                HumanDuration(started.elapsed()),
-                cisat.get_best_solution_so_far()
-            );
-        }
-        "structure" => {
-            let mut cisat = cisat::Cohort::<cisat::problems::Ackley>::new(params);
             for _ in 1..args.iter {
                 cisat.iterate();
                 bar.set_message(format!("Best: {:.2}", cisat.get_best_solution_so_far()).as_str());
                 bar.inc(1);
             }
+            // cisat.solve();
             bar.finish_and_clear();
             println!(
                 "Done! The simulation took {}, and the best solution found was {:.2}.",

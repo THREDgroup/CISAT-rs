@@ -115,50 +115,6 @@ impl Parameters {
             panic!("The satisficing fraction must be between 0 and 1 inclusive.");
         }
     }
-    /// Update number of teams
-    pub fn with_teams(self, number_of_teams: usize) -> Self {
-        Parameters {
-            number_of_teams,
-            number_of_agents: self.number_of_agents,
-            number_of_iterations: self.number_of_iterations,
-            temperature_schedule: self.temperature_schedule,
-            operational_learning: self.operational_learning,
-            communication: self.communication,
-            self_bias: self.self_bias,
-            quality_bias: self.quality_bias,
-            satisficing_fraction: self.satisficing_fraction,
-        }
-    }
-
-    /// Update number of agents
-    pub fn with_agents(self, number_of_agents: usize) -> Self {
-        Parameters {
-            number_of_teams: self.number_of_teams,
-            number_of_agents,
-            number_of_iterations: self.number_of_iterations,
-            temperature_schedule: self.temperature_schedule,
-            operational_learning: self.operational_learning,
-            communication: self.communication,
-            self_bias: self.self_bias,
-            quality_bias: self.quality_bias,
-            satisficing_fraction: self.satisficing_fraction,
-        }
-    }
-
-    /// Update number of agents
-    pub fn with_iterations(self, number_of_iterations: usize) -> Self {
-        Parameters {
-            number_of_teams: self.number_of_teams,
-            number_of_agents: self.number_of_agents,
-            number_of_iterations,
-            temperature_schedule: self.temperature_schedule,
-            operational_learning: self.operational_learning,
-            communication: self.communication,
-            self_bias: self.self_bias,
-            quality_bias: self.quality_bias,
-            satisficing_fraction: self.satisficing_fraction,
-        }
-    }
 }
 
 impl Default for Parameters {

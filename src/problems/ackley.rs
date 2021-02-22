@@ -62,7 +62,7 @@ impl Ackley {
         fx -= (cosine_sum / (n as f64)).exp();
         fx += std::f64::consts::E + 20.0;
         self.objective_function_value = vec![fx; 1];
-        self.quality_scalar = -fx;
+        self.quality_scalar = 20.0 + std::f64::consts::E - fx;
     }
 }
 

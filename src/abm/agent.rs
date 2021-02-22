@@ -6,11 +6,13 @@ use super::super::utilities::{
     parameters::{OperationalLearning, Parameters, TemperatureSchedule},
     Solution,
 };
-use crate::utilities::randomness::random_unit_draw;
+use crate::utilities::randomness::{multinomial_draw, random_unit_draw};
 
 /// This is an agent, the fundamental building block for a CISAT team
 #[derive(Clone, Debug)]
 pub struct Agent<S: Solution> {
+    /// Agent id
+    id: usize,
     /// The iteration number as tracked by the agent
     iteration_number: u64,
     /// The lst operation performed by the agent
@@ -32,17 +34,22 @@ pub struct Agent<S: Solution> {
 /// This is a trait for implementing new agents
 pub trait AgentMethods<S: Solution>: Send {
     /// Generates a new agent
-    fn new(parameters: Parameters) -> Self;
+    fn new(id: usize, parameters: Parameters) -> Self;
     /// Iterates on the solution
     fn iterate(&mut self);
     /// Gets the best solution found by the agent so far
     fn get_best_solution_so_far(&mut self) -> S;
+    /// Gets the current solution of the agent
+    fn get_current_solution(&mut self) -> S;
+    /// Agent accepts rival solutions and interacts
+    fn communicate(&mut self, solutions: Vec<S>);
 }
 
 impl<S: Solution> AgentMethods<S> for Agent<S> {
-    fn new(parameters: Parameters) -> Self {
+    fn new(id: usize, parameters: Parameters) -> Self {
         let solution = S::new();
         Agent {
+            id,
             iteration_number: 1,
             last_operation: 0,
             temperature: 0.0,
@@ -87,6 +94,29 @@ impl<S: Solution> AgentMethods<S> for Agent<S> {
     fn get_best_solution_so_far(&mut self) -> S {
         self.best_solution_so_far.clone()
     }
+
+    fn get_current_solution(&mut self) -> S {
+        self.current_solution.clone()
+    }
+
+    fn communicate(&mut self, mut solutions: Vec<S>) {
+        // Get scalar vector
+        let mut qualities: Vec<f64> = solutions
+            .clone()
+            .into_iter()
+            .map(|x| x.get_quality_scalar() + self.parameters.quality_bias)
+            .collect();
+
+        // Add in self-bias
+        qualities[self.id] += self.parameters.self_bias;
+
+        // Choose solution
+        println!("{:?}", qualities);
+        let idx = multinomial_draw(qualities);
+
+        // Extract the design
+        self.current_solution = solutions.remove(idx);
+    }
 }
 
 impl<S: Solution> Agent<S> {
@@ -128,12 +158,5 @@ impl<S: Solution> Agent<S> {
             }
             _ => {}
         }
-    }
-}
-
-/// Implement default for solution
-impl<S: Solution> Default for Agent<S> {
-    fn default() -> Self {
-        Agent::new(Default::default())
     }
 }

@@ -1,12 +1,13 @@
 use cisat::problems::Ackley;
+use cisat::CommunicationStyle;
 use cisat::{Cohort, Parameters};
 fn main() {
-    let mut x = Cohort::<Ackley>::new(
-        Parameters::default()
-            .with_teams(10)
-            .with_agents(20)
-            .with_iterations(10000),
-    );
+    let y = Parameters {
+        number_of_teams: 1,
+        communication: CommunicationStyle::RegularInterval { interval: 5 },
+        ..Default::default()
+    };
+    let mut x = Cohort::<Ackley>::new(y);
 
     x.solve();
 

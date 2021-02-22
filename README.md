@@ -4,7 +4,15 @@
 # About
 This is an implementation of the Cognitively-Inspired Simulated Annealing Teams (CISAT) Framework in Rust. 
 
-NOTE: This is currently an incomplete implementation.
+This is currently an incomplete implementation. Progress on CISAT characteristics includes:
+- [x] Multi-agency
+- [x] Organic interaction timing
+- [x] Quality-informed solutions haring
+- [x] Quality bias reduction
+- [x] Self-bias
+- [ ] Operational learning
+- [ ] Locally-sensitive search
+- [ ] Satisficing
 
 # Usage
 Here is a basic examples of usage

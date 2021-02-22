@@ -77,7 +77,7 @@ where
     /// This generates a new cohort
     pub fn new(parameters: Parameters) -> Cohort<S, A, T> {
         Cohort {
-            team_list: (0..parameters.number_of_agents)
+            team_list: (0..parameters.number_of_teams)
                 .map(|_| T::new(parameters.clone()))
                 .collect(),
             solution_type: Default::default(),

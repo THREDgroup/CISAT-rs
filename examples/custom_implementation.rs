@@ -56,7 +56,7 @@ struct CustomAgent {
 }
 
 impl AgentMethods<CustomProblem> for CustomAgent {
-    fn new(parameters: Parameters) -> Self {
+    fn new(id: usize, parameters: Parameters) -> Self {
         unimplemented!()
     }
 
@@ -65,6 +65,14 @@ impl AgentMethods<CustomProblem> for CustomAgent {
     }
 
     fn get_best_solution_so_far(&mut self) -> CustomProblem {
+        unimplemented!()
+    }
+
+    fn get_current_solution(&mut self) -> CustomProblem {
+        unimplemented!()
+    }
+
+    fn communicate(&mut self, solutions: Vec<CustomProblem>) {
         unimplemented!()
     }
 }
@@ -77,6 +85,10 @@ impl TeamMethods<CustomProblem, CustomAgent> for CustomTeam {
     }
 
     fn iterate(&mut self) {
+        unimplemented!()
+    }
+
+    fn communicate(&mut self) {
         unimplemented!()
     }
 
