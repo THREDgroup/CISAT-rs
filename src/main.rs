@@ -1,4 +1,7 @@
-use cisat::{CommunicationStyle, OperationalLearning, Parameters, TemperatureSchedule};
+use cisat::{
+    AgentMethods, Cohort, CommunicationStyle, OperationalLearning, Parameters, Solution,
+    TeamMethods, TemperatureSchedule,
+};
 use indicatif::{HumanDuration, ProgressBar, ProgressStyle};
 use std::time::Instant;
 use structopt::StructOpt;
@@ -9,7 +12,10 @@ use structopt::StructOpt;
 struct Cli {
     /// Makes CISAT very, very chatty
     #[structopt(short, long)]
-    verbosity: bool,
+    verbose: bool,
+    /// Run teams in parallel
+    #[structopt(short = "R", long)]
+    parallel: bool,
     /// The number of teams to run
     #[structopt(short = "T", long, default_value = "10")]
     teams: usize,
@@ -119,32 +125,47 @@ fn main() {
     println!("{}", params);
 
     // match for problem and run
-    let started = Instant::now();
-    let bar = ProgressBar::new(args.iter as u64);
-    bar.set_style(
-        ProgressStyle::default_bar()
-            .template("{spinner} [{msg}] {wide_bar} [{percent}%, ~{eta} remaining]"), // .progress_chars("##-"),
-    );
-    bar.set_message("Starting...");
+
     match args.problem.to_lowercase().as_str() {
         "ackley" => {
-            let mut cisat = cisat::Cohort::<cisat::problems::Ackley>::new(params);
-            for _ in 1..args.iter {
-                cisat.iterate();
-                bar.set_message(format!("Best: {:.2}", cisat.get_best_solution_so_far()).as_str());
-                bar.inc(1);
-            }
-            // cisat.solve();
-            bar.finish_and_clear();
-            println!(
-                "Done! The simulation took {}, and the best solution found was {:.2}.",
-                HumanDuration(started.elapsed()),
-                cisat.get_best_solution_so_far()
-            );
+            let mut cisat = Cohort::<cisat::problems::Ackley>::new(params);
+            run_all(cisat, args);
+        }
+        "structure" => {
+            let mut cisat = Cohort::<cisat::problems::Structure>::new(params);
+            run_all(cisat, args);
         }
         &_ => panic!(
             "{} is not a valid option for --problem",
             args.schedule.as_str()
         ),
     }
+}
+
+fn run_all<S: Solution, A: AgentMethods<S>, T: TeamMethods<S, A>>(
+    mut cisat: Cohort<S, A, T>,
+    args: Cli,
+) {
+    let started = Instant::now();
+    if args.parallel {
+        cisat.solve();
+    } else {
+        let bar = ProgressBar::new(args.iter as u64);
+        bar.set_style(
+            ProgressStyle::default_bar()
+                .template("{spinner} [{msg}] {wide_bar} [{percent}%, ~{eta} remaining]"), // .progress_chars("##-"),
+        );
+        bar.set_message("Starting...");
+        for _ in 1..args.iter {
+            cisat.iterate();
+            bar.set_message(format!("Best: {:.2}", cisat.get_best_solution_so_far()).as_str());
+            bar.inc(1);
+        }
+        bar.finish_and_clear();
+    }
+    println!(
+        "Done! The simulation took {}, and the best solution found was {:.2}.",
+        HumanDuration(started.elapsed()),
+        cisat.get_best_solution_so_far()
+    );
 }
