@@ -5,6 +5,7 @@ use super::{
     agent::AgentMethods,
 };
 use crate::{Agent, CommunicationStyle};
+use indicatif::ProgressBar;
 use std::marker::PhantomData;
 
 /// This is the Team construct, which contains a set of Agents

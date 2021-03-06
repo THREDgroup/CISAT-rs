@@ -1,4 +1,5 @@
 use cisat::{
+    problems::{Ackley, Structure},
     AgentMethods, Cohort, CommunicationStyle, OperationalLearning, Parameters, Solution,
     TeamMethods, TemperatureSchedule,
 };
@@ -89,12 +90,16 @@ fn main() {
     let temperature_schedule = match args.schedule.to_lowercase().as_str() {
         "geometric" => TemperatureSchedule::Geometric {
             initial_temperature: args.initial_temperature,
+            dwell: 1,
         },
         "cauchy" => TemperatureSchedule::Cauchy {
             initial_temperature: args.initial_temperature,
+            delta: 1.0,
+            dwell: 1,
         },
         "triki" => TemperatureSchedule::Triki {
             initial_temperature: args.initial_temperature,
+            dwell: 1,
             delta: args.delta,
         },
         "none" => TemperatureSchedule::None,
@@ -128,11 +133,11 @@ fn main() {
 
     match args.problem.to_lowercase().as_str() {
         "ackley" => {
-            let mut cisat = Cohort::<cisat::problems::Ackley>::new(params);
+            let cisat = Cohort::<Ackley>::new(params);
             run_all(cisat, args);
         }
         "structure" => {
-            let mut cisat = Cohort::<cisat::problems::Structure>::new(params);
+            let cisat = Cohort::<Structure>::new(params);
             run_all(cisat, args);
         }
         &_ => panic!(
@@ -148,12 +153,16 @@ fn run_all<S: Solution, A: AgentMethods<S>, T: TeamMethods<S, A>>(
 ) {
     let started = Instant::now();
     if args.parallel {
+        let bar = ProgressBar::new_spinner();
+        bar.set_style(ProgressStyle::default_bar().template("{spinner} {elapsed_precise} elapsed"));
+        bar.enable_steady_tick(100);
         cisat.solve();
+        bar.finish_and_clear();
     } else {
         let bar = ProgressBar::new(args.iter as u64);
         bar.set_style(
             ProgressStyle::default_bar()
-                .template("{spinner} [{msg}] {wide_bar} [{percent}%, ~{eta} remaining]"), // .progress_chars("##-"),
+                .template("[{msg}] {wide_bar} [{percent}%, ~{eta} remaining]"),
         );
         bar.set_message("Starting...");
         for _ in 1..args.iter {

@@ -12,16 +12,20 @@ pub enum TemperatureSchedule {
         initial_temperature: f64,
         /// Delta updating parameter
         delta: f64,
+        dwell: usize,
     },
     /// This is the Cauchy temperature schedule
     Cauchy {
         /// Initial temperature
         initial_temperature: f64,
+        delta: f64,
+        dwell: usize,
     },
     /// This is the geometry temperature schedule
     Geometric {
         /// Initial temperature
         initial_temperature: f64,
+        dwell: usize,
     },
     /// I guess you could just not use a temperature schedule
     None,
@@ -121,6 +125,7 @@ impl Parameters {
             temperature_schedule: TemperatureSchedule::Triki {
                 initial_temperature: 100.0,
                 delta: 0.05,
+                dwell: 50,
             },
             communication: CommunicationStyle::RegularInterval { interval: 1 },
             self_bias: 0.0,
@@ -128,6 +133,21 @@ impl Parameters {
             satisficing_fraction: 0.0,
             ..Default::default()
         }
+    }
+    /// Set teams value
+    pub fn with_teams(mut self, number_of_teams: usize) -> Self {
+        self.number_of_teams = number_of_teams;
+        self
+    }
+    /// Set teams value
+    pub fn with_agents(mut self, number_of_agents: usize) -> Self {
+        self.number_of_agents = number_of_agents;
+        self
+    }
+    /// Set teams value
+    pub fn with_iters(mut self, number_of_iterations: usize) -> Self {
+        self.number_of_iterations = number_of_iterations;
+        self
     }
 }
 
@@ -139,6 +159,7 @@ impl Default for Parameters {
             number_of_iterations: 100,
             temperature_schedule: TemperatureSchedule::Geometric {
                 initial_temperature: 1.0,
+                dwell: 1,
             },
             operational_learning: OperationalLearning::None,
             communication: CommunicationStyle::None,
@@ -160,22 +181,30 @@ impl fmt::Display for Parameters {
             TemperatureSchedule::Triki {
                 initial_temperature,
                 delta,
+                dwell,
             } => {
                 writeln!(f, " - Triki annealing schedule");
                 writeln!(f, "    - initial_temperature = {}", initial_temperature);
                 writeln!(f, "    - delta = {}", delta);
+                writeln!(f, "    - dwell = {}", dwell);
             }
             TemperatureSchedule::Cauchy {
                 initial_temperature,
+                delta,
+                dwell,
             } => {
                 writeln!(f, " - Cauchy annealing schedule");
                 writeln!(f, "    - initial_temperature = {}", initial_temperature);
+                writeln!(f, "    - delta = {}", delta);
+                writeln!(f, "    - dwell = {}", dwell);
             }
             TemperatureSchedule::Geometric {
                 initial_temperature,
+                dwell,
             } => {
                 writeln!(f, " - Geometric annealing schedule");
                 writeln!(f, "    - initial_temperature = {}", initial_temperature);
+                writeln!(f, "    - dwell = {}", dwell);
             }
             TemperatureSchedule::None => {
                 writeln!(f, " - No annealing schedule");

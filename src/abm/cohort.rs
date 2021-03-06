@@ -6,6 +6,7 @@ use super::{
     team::{Team, TeamMethods},
 };
 use crate::problems::Ackley;
+use indicatif::ProgressBar;
 use rayon::prelude::*;
 use std::marker::PhantomData;
 

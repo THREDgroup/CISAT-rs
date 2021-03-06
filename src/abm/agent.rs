@@ -142,16 +142,20 @@ impl<S: Solution> Agent<S> {
             TemperatureSchedule::Triki {
                 initial_temperature,
                 delta,
+                dwell,
             } => {
                 self.temperature = initial_temperature / (self.iteration_number as f64);
             }
             TemperatureSchedule::Cauchy {
                 initial_temperature,
+                delta,
+                dwell,
             } => {
                 self.temperature = initial_temperature / (self.iteration_number as f64);
             }
             TemperatureSchedule::Geometric {
                 initial_temperature,
+                dwell,
             } => {
                 self.temperature = initial_temperature / (self.iteration_number as f64);
             }
