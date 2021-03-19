@@ -45,7 +45,7 @@ where
     /// This contains the parameters for the class
     parameters: Parameters,
     /// This contains the teams in the cohort
-    team_list: Vec<T>,
+    pub team_list: Vec<T>,
     /// Bookkeeping the solution type
     solution_type: PhantomData<S>,
     /// Bookkeeping the agent-type

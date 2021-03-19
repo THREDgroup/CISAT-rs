@@ -16,10 +16,9 @@ pub(crate) fn random_gaussian_vector(
     let mut rng = thread_rng();
     let normal = Normal::new(mean, standard_deviation).unwrap();
 
-    // Replace elemnts with uniform normals
-    for i in 0..length {
-        let dd = normal.sample(&mut rng);
-        random_vector[i] += dd;
+    // Replace elements with uniform normals
+    for elem in random_vector.iter_mut().take(length) {
+        *elem += normal.sample(&mut rng);
     }
 
     random_vector
@@ -32,6 +31,25 @@ pub(crate) fn multinomial_draw(weights: Vec<f64>) -> usize {
     weighted.sample(&mut rng)
 }
 
+/// This make a multinomial draw from a set of weights with identifiers - think a loaded die with weird names for the faces
+pub(crate) fn multinomial_tuple_draw<T: Copy>(identifiers_and_weights: Vec<(T, f64)>) -> T {
+    // Split weights and indices
+    let mut weights = vec![];
+    let mut identifiers = vec![];
+    for elem in identifiers_and_weights.into_iter() {
+        weights.push(elem.1);
+        identifiers.push(elem.0);
+    }
+
+    // Make rng thread
+    let mut rng = thread_rng();
+
+    // Perform weighted draw and get index
+    let weighted = WeightedIndex::new(weights).unwrap();
+    let idx = weighted.sample(&mut rng);
+    identifiers[idx]
+}
+
 /// This generates a random vector between uniform bounds
 pub(crate) fn random_uniform_vector(length: usize, low: f64, high: f64) -> Vec<f64> {
     // Make a blank random vector
@@ -42,15 +60,14 @@ pub(crate) fn random_uniform_vector(length: usize, low: f64, high: f64) -> Vec<f
     let uniform = Uniform::new_inclusive(low, high);
 
     // Replace elemnts with uniform normals
-    for i in 0..length {
-        random_vector[i] += uniform.sample(&mut rng);
+    for elem in random_vector.iter_mut().take(length) {
+        *elem += uniform.sample(&mut rng);
     }
 
-    return random_vector;
+    random_vector
 }
 
 /// Random number between 0 and 1
-
 pub(crate) fn random_unit_draw() -> f64 {
     // Make a distribution to upll from
     let mut rng = thread_rng();
@@ -60,15 +77,25 @@ pub(crate) fn random_unit_draw() -> f64 {
 
 #[cfg(test)]
 mod random_tests {
-    use crate::utilities::randomness::{multinomial_draw, random_gaussian_vector};
+    use crate::utilities::randomness::{
+        multinomial_draw, random_gaussian_vector, random_uniform_vector,
+    };
 
     #[test]
-    fn test_vector_generation() {
+    fn test_gaussian_vector_generation() {
         let x = random_gaussian_vector(5, 0.0, 1.0);
+        println!("gaussian: {:?}", x);
+    }
+
+    #[test]
+    fn test_uniform_vector_generation() {
+        let x = random_uniform_vector(5, 0.0, 1.0);
+        println!("uniform: {:?}", x);
     }
 
     #[test]
     fn test_multinomial_draw() {
         let x = multinomial_draw(vec![1.0, 2.3, 10.1, 3.1]);
+        println!("mult: {:?}", x);
     }
 }

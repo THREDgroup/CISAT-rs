@@ -12,19 +12,23 @@ pub enum TemperatureSchedule {
         initial_temperature: f64,
         /// Delta updating parameter
         delta: f64,
+        /// How long to dwell during temperature
         dwell: usize,
     },
     /// This is the Cauchy temperature schedule
     Cauchy {
         /// Initial temperature
         initial_temperature: f64,
+        /// Delta updating parameter
         delta: f64,
+        /// How long to dwell during temperature
         dwell: usize,
     },
     /// This is the geometry temperature schedule
     Geometric {
         /// Initial temperature
         initial_temperature: f64,
+        /// How long to dwell during temperature
         dwell: usize,
     },
     /// I guess you could just not use a temperature schedule

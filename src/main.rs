@@ -4,6 +4,7 @@ use cisat::{
     TeamMethods, TemperatureSchedule,
 };
 use indicatif::{HumanDuration, ProgressBar, ProgressStyle};
+
 use std::time::Instant;
 use structopt::StructOpt;
 
