@@ -15,7 +15,8 @@ use std::marker::PhantomData;
 /// The cohort allows you to run a set of teams easily to achieve statistical significance:
 /// ```
 /// use cisat::{Parameters, Cohort, problems::Ackley};
-/// let mut x = Cohort::<Ackley>::new(Parameters::default());
+/// type S = Ackley<5>;
+/// let mut x = Cohort::<S>::new(Parameters::default());
 /// x.solve();
 /// ```
 ///Above, we specify one generic parameters `Ackley`, which tells the `Cohort` which problem to solve.
@@ -23,7 +24,8 @@ use std::marker::PhantomData;
 /// `AgentMethods` to specific which type of agent to use:
 /// ```
 /// use cisat::{Parameters, Cohort, problems::Ackley, Agent};
-/// let mut x = Cohort::<Ackley, Agent<Ackley>>::new(Parameters::default());
+/// type S = Ackley<5>;
+/// let mut x = Cohort::<S, Agent<S>>::new(Parameters::default());
 /// x.solve();
 /// ```
 /// Here, we just fed in the in-build `Agent` class which already implements `AgentMethods`. You can
@@ -31,12 +33,15 @@ use std::marker::PhantomData;
 /// 'TeamMethods':
 /// ```
 /// use cisat::{Parameters, Cohort, problems::Ackley, Agent, Team};
-/// let mut x = Cohort::<Ackley, Agent<Ackley>, Team<Ackley, Agent<Ackley>>>::new(Parameters::default());
+/// type S = Ackley<5>;
+/// type A = Agent<S>;
+/// type T = Team<S, A>;
+/// let mut x = Cohort::<S, A, T>::new(Parameters::default());
 /// x.solve();
 /// ```
 
 #[derive(Clone, Debug)]
-pub struct Cohort<S = Ackley, A = Agent<S>, T = Team<S, A>>
+pub struct Cohort<S = Ackley<5>, A = Agent<S>, T = Team<S, A>>
 where
     S: Solution,
     A: AgentMethods<S>,

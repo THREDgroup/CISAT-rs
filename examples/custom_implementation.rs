@@ -3,7 +3,9 @@ use std::cmp::{Eq, Ord, Ordering, PartialOrd};
 use std::ops::Sub;
 
 #[derive(Debug, Clone)]
-struct CustomProblem {}
+struct CustomProblem {
+    x: usize,
+}
 
 impl Solution for CustomProblem {
     const NUMBER_OF_MOVE_OPERATORS: usize = 0;

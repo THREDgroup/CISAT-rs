@@ -1,17 +1,11 @@
 //! This is an example problem for optimizing the Ackley function
 
-use super::super::{
-    utilities::randomness::{random_gaussian_vector, random_uniform_vector},
-    utilities::Solution,
-};
+use super::super::{utilities::randomness::random_uniform_vector, utilities::Solution};
 use std::{cmp::Ordering, ops::Sub};
-
-/// Specifically, we optimize Ackley in 5 dimensions
-const NUMBER_OF_DIMENSIONS: usize = 5;
 
 #[derive(Clone, Debug)]
 /// This contains solutions for the Ackley problem
-pub struct Ackley {
+pub struct Ackley<const NUMBER_OF_DIMENSIONS: usize> {
     /// This contains direct objective function values
     objective_function_value: Vec<f64>,
     /// This contains a single quality scalar derived from objective function values
@@ -20,13 +14,13 @@ pub struct Ackley {
     x: Vec<f64>,
 }
 
-impl Solution for Ackley {
+impl<const NUMBER_OF_DIMENSIONS: usize> Solution for Ackley<{ NUMBER_OF_DIMENSIONS }> {
     const NUMBER_OF_MOVE_OPERATORS: usize = 1;
     const NUMBER_OF_OBJECTIVES: usize = 1;
 
-    fn new() -> Ackley {
+    fn new() -> Ackley<{ NUMBER_OF_DIMENSIONS }> {
         let mut solution = Ackley {
-            objective_function_value: vec![0.0; Ackley::NUMBER_OF_OBJECTIVES],
+            objective_function_value: vec![0.0; 1],
             x: random_uniform_vector(NUMBER_OF_DIMENSIONS, -10.0, 10.0),
             quality_scalar: 0.0,
         };
@@ -51,7 +45,7 @@ impl Solution for Ackley {
     }
 }
 
-impl Ackley {
+impl<const NUMBER_OF_DIMENSIONS: usize> Ackley<{ NUMBER_OF_DIMENSIONS }> {
     /// This function offers some functionality for evaluation
     fn evaluate(&mut self) {
         let n = self.x.len();
@@ -70,27 +64,27 @@ impl Ackley {
     }
 }
 
-impl PartialEq for Ackley {
+impl<const NUMBER_OF_DIMENSIONS: usize> PartialEq for Ackley<{ NUMBER_OF_DIMENSIONS }> {
     fn eq(&self, other: &Self) -> bool {
         self.quality_scalar == other.quality_scalar
     }
 }
 
-impl Eq for Ackley {}
+impl<const NUMBER_OF_DIMENSIONS: usize> Eq for Ackley<{ NUMBER_OF_DIMENSIONS }> {}
 
-impl PartialOrd for Ackley {
+impl<const NUMBER_OF_DIMENSIONS: usize> PartialOrd for Ackley<{ NUMBER_OF_DIMENSIONS }> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         self.quality_scalar.partial_cmp(&other.quality_scalar)
     }
 }
 
-impl Ord for Ackley {
+impl<const NUMBER_OF_DIMENSIONS: usize> Ord for Ackley<{ NUMBER_OF_DIMENSIONS }> {
     fn cmp(&self, other: &Self) -> Ordering {
         self.partial_cmp(other).unwrap()
     }
 }
 
-impl Sub for Ackley {
+impl<const NUMBER_OF_DIMENSIONS: usize> Sub for Ackley<{ NUMBER_OF_DIMENSIONS }> {
     type Output = f64;
 
     fn sub(self, rhs: Self) -> Self::Output {

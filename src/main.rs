@@ -134,7 +134,7 @@ fn main() {
 
     match args.problem.to_lowercase().as_str() {
         "ackley" => {
-            let cisat = Cohort::<Ackley>::new(params);
+            let cisat = Cohort::<Ackley<5>>::new(params);
             run_all(cisat, args);
         }
         "structure" => {
